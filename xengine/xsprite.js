@@ -3,103 +3,103 @@
   * Copyright 2012 xiangfeng
   * Released under the MIT license
   * Please contact to xiangfenglf@163.com if you hava any question
-  * ÓÎÏ·¾«ÁéÀà
+  * æ¸¸æˆç²¾çµç±»
   */
  (function(win) {
- 	//äÖÈ¾¶ÔÏóÀà   
- 	var _sprite = win.Sprite = RenderObj.extend({
- 		init: function(name) {
- 			this._super(name);
- 			//Ö¡¶¯»­¼¯ºÏ¶ÔÏó
- 			this.anims = null;
- 			this.animsCtrl = new FrameCtrl();
- 			//ÊÇ·ñË®Æ½·´Ïò 
- 			this.isXFlip = false;
- 			//ÊÇ·ñ´¹Ö±·´Ïò 
- 			this.isYFlip = false;
- 			this.scaleX = 1;
- 			this.scaleY = 1;
- 			//°üÎ§ºĞ
- 			this.bBox = null;
- 			//tagPoint
- 			this.tags = [];
- 		},
- 		//ÉèÖÃÖ¡¶¯»­¼¯ºÏ¶ÔÏó
- 		setAnims: function(animations, currAnimName) {
- 			currAnimName = currAnimName || "def";
- 			this.anims = animations;
- 			this.animsCtrl.setAnims(animations, currAnimName);
- 			//ÖØĞÂÉèÖÃ´óĞ¡
- 			var f = this.getCurrFrame();
- 			this.w = f[3];
- 			this.h = f[4];
- 		},
- 		//ÉèÖÃ¶¯»­¼¯
- 		addAnim: function(name, frames, isCurrent) {
- 			this.anims.add(name, frames);
- 			isCurrent && this.animsCtrl.setCurrent(name);
- 		},
- 		//É¾³ıÖ¸¶¨Ãû³Æ¶¯×÷
- 		removeAnim: function(name) {
- 			this.anims.remove(name);
- 		},
- 		//°´Ãû³ÆÉèÖÃµ±Ç°¶¯×÷
- 		setCAnim: function(name) {
- 			this.animsCtrl.setCurrent(name);
- 		},
- 		//ÉèÖÃ¶¯»­ËÙ¶È
- 		setAnimSpeed: function(sp) {
- 			this.animsCtrl.speed = sp;
- 		},
- 		//°´Ãû³Æ»ñÈ¡¶¯×÷
- 		getAnim: function(name) {
- 			return this.anims.get(name);
- 		},
- 		//»ñÈ¡µ±Ç°ÔËĞĞµÄ¶¯»­
- 		getCurrentAnim: function() {
- 			return this.animsCtrl.getCurrent();
- 		},
- 		//»ñÈ¡µ±Ç°ÔËĞĞÖ¡
- 		getCurrFrame: function() {
- 			return this.animsCtrl.getCurrFrame();
- 		},
- 		//»ñÈ¡ÏÂÒ»Ö¡ĞÅÏ¢
- 		getNextFrame: function() {
- 			return this.animsCtrl.getNextFrame();
- 		},
- 		//³¬³öÆÁÄ»ÒÆ³ı¸Ã¶ÔÏó
- 		offScreenRemove: function() {
- 			var hw = this.w * 0.5,
- 				hh = this.h * 0.5;
- 			if (this.x < -hw || this.x > this.owner.w + hw || this.y < -hh || this.y > this.owner.h + hh) {
- 				this.owner.removeRObj(this);
- 			};
- 		},
- 		//¸üĞÂ·½·¨
- 		update: function() {
- 			this._super();
- 			if (this.bBox) {
- 				this.bBox.x = this.x;
- 				this.bBox.y = this.y;
- 			}
- 			this.offScreenRemove();
- 		},
- 		//äÖÈ¾·½·¨£¬Ã¿Ò»Ö¡µ÷ÓÃ,ctxÊÇcanvas»·¾³
- 		render: function(ctx) {
- 			ctx.translate(this.x, this.y);
- 			var hw = 0.5 * this.w;
- 			var hh = 0.5 * this.h;
- 			var scaleX = (this.isXFlip) ? -this.scaleX : this.scaleX;
- 			var scaleY = (this.isYFlip) ? -this.scaleY : this.scaleY;
- 			if (this.deg !== 0) {
- 				ctx.rotate(MathUtil.deg2rad(this.deg));
- 			}
- 			ctx.scale(scaleX, scaleY);
- 			var f = this.getNextFrame();
- 			ctx.drawImage(f[0], f[1], f[2], f[3], f[4], -hw, -hh, this.w, this.h);
- 		}
- 	});
- 	_sprite.ClassName = "Sprite";
- 	//×¢²áÀàµ½Àà¹¤³§ÖĞ
- 	ClassFactory.regClass(_sprite.ClassName, _sprite);
+    //æ¸²æŸ“å¯¹è±¡ç±»   
+    var _sprite = win.Sprite = RenderObj.extend({
+        init: function(name) {
+            this._super(name);
+            //å¸§åŠ¨ç”»é›†åˆå¯¹è±¡
+            this.anims = null;
+            this.animsCtrl = new FrameCtrl();
+            //æ˜¯å¦æ°´å¹³åå‘ 
+            this.isXFlip = false;
+            //æ˜¯å¦å‚ç›´åå‘ 
+            this.isYFlip = false;
+            this.scaleX = 1;
+            this.scaleY = 1;
+            //åŒ…å›´ç›’
+            this.bBox = null;
+            //tagPoint
+            this.tags = [];
+        },
+        //è®¾ç½®å¸§åŠ¨ç”»é›†åˆå¯¹è±¡
+        setAnims: function(animations, currAnimName) {
+            currAnimName = currAnimName || "def";
+            this.anims = animations;
+            this.animsCtrl.setAnims(animations, currAnimName);
+            //é‡æ–°è®¾ç½®å¤§å°
+            var f = this.getCurrFrame();
+            this.w = f[3];
+            this.h = f[4];
+        },
+        //è®¾ç½®åŠ¨ç”»é›†
+        addAnim: function(name, frames, isCurrent) {
+            this.anims.add(name, frames);
+            isCurrent && this.animsCtrl.setCurrent(name);
+        },
+        //åˆ é™¤æŒ‡å®šåç§°åŠ¨ä½œ
+        removeAnim: function(name) {
+            this.anims.remove(name);
+        },
+        //æŒ‰åç§°è®¾ç½®å½“å‰åŠ¨ä½œ
+        setCAnim: function(name) {
+            this.animsCtrl.setCurrent(name);
+        },
+        //è®¾ç½®åŠ¨ç”»é€Ÿåº¦
+        setAnimSpeed: function(sp) {
+            this.animsCtrl.speed = sp;
+        },
+        //æŒ‰åç§°è·å–åŠ¨ä½œ
+        getAnim: function(name) {
+            return this.anims.get(name);
+        },
+        //è·å–å½“å‰è¿è¡Œçš„åŠ¨ç”»
+        getCurrentAnim: function() {
+            return this.animsCtrl.getCurrent();
+        },
+        //è·å–å½“å‰è¿è¡Œå¸§
+        getCurrFrame: function() {
+            return this.animsCtrl.getCurrFrame();
+        },
+        //è·å–ä¸‹ä¸€å¸§ä¿¡æ¯
+        getNextFrame: function() {
+            return this.animsCtrl.getNextFrame();
+        },
+        //è¶…å‡ºå±å¹•ç§»é™¤è¯¥å¯¹è±¡
+        offScreenRemove: function() {
+            var hw = this.w * 0.5,
+                hh = this.h * 0.5;
+            if (this.x < -hw || this.x > this.owner.w + hw || this.y < -hh || this.y > this.owner.h + hh) {
+                this.owner.removeRObj(this);
+            };
+        },
+        //æ›´æ–°æ–¹æ³•
+        update: function() {
+            this._super();
+            if (this.bBox) {
+                this.bBox.x = this.x;
+                this.bBox.y = this.y;
+            }
+            this.offScreenRemove();
+        },
+        //æ¸²æŸ“æ–¹æ³•ï¼Œæ¯ä¸€å¸§è°ƒç”¨,ctxæ˜¯canvasç¯å¢ƒ
+        render: function(ctx) {
+            ctx.translate(this.x, this.y);
+            var hw = 0.5 * this.w;
+            var hh = 0.5 * this.h;
+            var scaleX = (this.isXFlip) ? -this.scaleX : this.scaleX;
+            var scaleY = (this.isYFlip) ? -this.scaleY : this.scaleY;
+            if (this.deg !== 0) {
+                ctx.rotate(MathUtil.deg2rad(this.deg));
+            }
+            ctx.scale(scaleX, scaleY);
+            var f = this.getNextFrame();
+            ctx.drawImage(f[0], f[1], f[2], f[3], f[4], -hw, -hh, this.w, this.h);
+        }
+    });
+    _sprite.ClassName = "Sprite";
+    //æ³¨å†Œç±»åˆ°ç±»å·¥å‚ä¸­
+    ClassFactory.regClass(_sprite.ClassName, _sprite);
  }(window))

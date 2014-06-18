@@ -3,7 +3,7 @@
  * Copyright 2012 xiangfeng
  * Released under the MIT license
  * Please contact to xiangfenglf@163.com if you hava any question
- * xengine ºËĞÄÀà°üº¬»ù±¾µÄ
+ * xengine æ ¸å¿ƒç±»åŒ…å«åŸºæœ¬çš„
  */
 (function(win) {
   /* Simple JavaScript Inheritance
@@ -60,7 +60,7 @@
         this.init.apply(this, arguments);
       }
     }
-    //´´½¨ÀàµÄÊµÀı
+    //åˆ›å»ºç±»çš„å®ä¾‹
     Class.newInstance = function(paramArr) {
       initializing = true;
       var obj = new Class();
@@ -78,12 +78,12 @@
     Class.extend = arguments.callee;
     return Class;
   };
-  //¶¨ÒåÀà¹¤³§£¬ËùÓĞµÄÀà¿ÉÒÔÍ¨¹ıregClass·½Ê½×¢²áµ½¹¤³§ÀàÖĞ£¬Í¨¹ınewInstance²úÉúÊµÀı
+  //å®šä¹‰ç±»å·¥å‚ï¼Œæ‰€æœ‰çš„ç±»å¯ä»¥é€šè¿‡regClassæ–¹å¼æ³¨å†Œåˆ°å·¥å‚ç±»ä¸­ï¼Œé€šè¿‡newInstanceäº§ç”Ÿå®ä¾‹
   win.ClassFactory = {
-    //±£´æÀà¶¨Òå
+    //ä¿å­˜ç±»å®šä¹‰
     classDef: {},
     CLASSIDX: 0,
-    //×¢²áÀà
+    //æ³¨å†Œç±»
     regClass: function(className, fn) {
       this.classDef[className] = {
         "idx": this.CLASSIDX,
@@ -91,7 +91,7 @@
       };
       this.CLASSIDX++;
     },
-    //´´½¨ÀàµÄÊµÀıclassName:×¢²áµÄÀàÃû,classArgsÒÔÊı×éĞÎÊ½³öÏÖµÄ²ÎÊı
+    //åˆ›å»ºç±»çš„å®ä¾‹className:æ³¨å†Œçš„ç±»å,classArgsä»¥æ•°ç»„å½¢å¼å‡ºç°çš„å‚æ•°
     newInstance: function(className, classArgs) {
       var cs = this.classDef[className];
       if (cs == null) {

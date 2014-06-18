@@ -3,80 +3,80 @@
  * Copyright 2012 xiangfeng
  * Released under the MIT license
  * Please contact to xiangfenglf@163.com if you hava any question 
- * ÓÎÏ·×´Ì¬»úÀà
+ * æ¸¸æˆçŠ¶æ€æœºç±»
  */
  (function(win){
-	  //×´Ì¬¹ÜÀíÀà
-	  var _StateContext = win.StateContext = Class.extend({
-		  init:function(owner)
-		  {
-			  //ºÍ¸Ã×´Ì¬Àà¹ØÁªµÄ¶ÔÏó
-			  this.owner = owner;
-			  this.states={};
-			  this.currState = null;
-		  },
-		  changeState:function(type)
-		  {
+      //çŠ¶æ€ç®¡ç†ç±»
+      var _StateContext = win.StateContext = Class.extend({
+          init:function(owner)
+          {
+              //å’Œè¯¥çŠ¶æ€ç±»å…³è”çš„å¯¹è±¡
+              this.owner = owner;
+              this.states={};
+              this.currState = null;
+          },
+          changeState:function(type)
+          {
               this.currState&&this.currState.exit();
-			  this.currState = this.states[type];
-			  this.currState.enter();
-		  },
-		  getState:function(type)
-		  {
-			  return this.states[type];
-		  },
-		  //×¢²áÒ»¸ö×´Ì¬Àà
-		  regState:function(state)
-		  {
-			  this.states[state.type] = state;
-			  return this;
-		  },
-          //×¢ÏúÒ»¸ö×´Ì¬Àà
-		  unRegState:function(type)
+              this.currState = this.states[type];
+              this.currState.enter();
+          },
+          getState:function(type)
+          {
+              return this.states[type];
+          },
+          //æ³¨å†Œä¸€ä¸ªçŠ¶æ€ç±»
+          regState:function(state)
+          {
+              this.states[state.type] = state;
+              return this;
+          },
+          //æ³¨é”€ä¸€ä¸ªçŠ¶æ€ç±»
+          unRegState:function(type)
           {
              if(this.states[type]!=null&&this.currState!=this.states[type])
-			  {
-				 delete this.states[type];
-			  }
-		  },
-		  unRegAll:function()
+              {
+                 delete this.states[type];
+              }
+          },
+          unRegAll:function()
           { 
-			  this.currState = null;
+              this.currState = null;
               this.states = {};
-		  },
-          //¸Ã·½·¨ÔÚÓÎÏ·Ö÷Ñ­»·ÖĞÊ¹ÓÃ
-		  update:function()
-		  {
+          },
+          //è¯¥æ–¹æ³•åœ¨æ¸¸æˆä¸»å¾ªç¯ä¸­ä½¿ç”¨
+          update:function()
+          {
               this.currState.change();
               this.currState.update(); 
-		  }
-	  })
-      //×´Ì¬³éÏóÀà
-	  var _state = win.State = Class.extend({
-		  init:function(type,context)
-		  {			  
-			  this.ctx = context;
-			  this.type = type;
-		  },
-		  //µ÷ÓÃcontext changeState·½·¨×ª»»µ½ÆäËû×´Ì¬
-		  change:function()
-		  {
-              return;
-		  },
-		  //µ±Ç°×´Ì¬µÄ»î¶¯
-          update:function()
-		  {
-			  return;
-		  },
-          //½øÈë¸Ã×´Ì¬Ê±Ö´ĞĞ
-	      enter:function()
-		  {
-			  return true;
-		  },
-          //ÍË³ö×´Ì¬Ö´ĞĞ
-		  exit:function()
+          }
+      })
+      //çŠ¶æ€æŠ½è±¡ç±»
+      var _state = win.State = Class.extend({
+          init:function(type,context)
+          {           
+              this.ctx = context;
+              this.type = type;
+          },
+          //è°ƒç”¨context changeStateæ–¹æ³•è½¬æ¢åˆ°å…¶ä»–çŠ¶æ€
+          change:function()
           {
-			  return;
-		  }
-	  })
+              return;
+          },
+          //å½“å‰çŠ¶æ€çš„æ´»åŠ¨
+          update:function()
+          {
+              return;
+          },
+          //è¿›å…¥è¯¥çŠ¶æ€æ—¶æ‰§è¡Œ
+          enter:function()
+          {
+              return true;
+          },
+          //é€€å‡ºçŠ¶æ€æ‰§è¡Œ
+          exit:function()
+          {
+              return;
+          }
+      })
  }(window))

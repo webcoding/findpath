@@ -3,24 +3,24 @@
  * Copyright 2012 xiangfeng
  * Released under the MIT license
  * Please contact to xiangfenglf@163.com if you hava any question 
- * ÓÎÏ·Á£×ÓĞ§¹ûÀà
+ * æ¸¸æˆç²’å­æ•ˆæœç±»
  */
 (function(win){
-    //´ÓÒıÇæµÄSprite¼Ì³Ğ
+    //ä»å¼•æ“çš„Spriteç»§æ‰¿
 	var _particle = win.Particle = Sprite.extend({  
 	init:function()
 	{
-	 //ÉúÃüºÁÃë
+	 //ç”Ÿå‘½æ¯«ç§’
 	 this.life = 500;
-	 //ÄêÁä
+	 //å¹´é¾„
 	 this.age = 0 ;
-	 //¿ªÊ¼Ê±¼ä 
+	 //å¼€å§‹æ—¶é—´ 
 	 this.sTime = 0 ;
-	 //³õÊ¼´óĞ¡
+	 //åˆå§‹å¤§å°
 	 this.sSize = 1;
-	 //½áÊø´óĞ¡
+	 //ç»“æŸå¤§å°
 	 this.eSize = 1;	
-	 //ÊÇ·ñ¼¤»î
+	 //æ˜¯å¦æ¿€æ´»
 	 this.active = false;
 	 this._super();
 	 this.isVisible = this.active;
@@ -48,15 +48,15 @@
 	  }	  
 	 }
 	});
-	//Á£×Ó·¢ÉúÆ÷
+	//ç²’å­å‘ç”Ÿå™¨
 	var _emit = win.Emit = Class.extend({
 	 init:function(param,sc,pClassName,pParam)
 	  {	
-		 //ÅçÉä¼ä¸ôÊ±¼ä
+		 //å–·å°„é—´éš”æ—¶é—´
 		 this.speed = param["speed"]||100;
-		 //ÅçÉä´ÎÊı,<0±íÊ¾ÎŞÏŞ
+		 //å–·å°„æ¬¡æ•°,<0è¡¨ç¤ºæ— é™
 		 this.times = param["times"]||-1;
-		 //Éè¶¨ÉúÃüÖÜÆÚ
+		 //è®¾å®šç”Ÿå‘½å‘¨æœŸ
 		 this.lifeRange = param["lifeRange"]||[500,800];
 		 this.sSize = param["sSize"]||1;
 		 this.eSize = param["eSize"]||1;
@@ -92,13 +92,13 @@
 			 p.start();
 		   }
 	 },
-	//·¢Éä
+	//å‘å°„
 	 jet:function()
 	 {
 		this.startTime = FrameState.currTime;
 		this.createParticle();
 	 },
-	 //¿É·ÅÔÚÓÎÏ·Ñ­»·ÖĞ¸üĞÂ
+	 //å¯æ”¾åœ¨æ¸¸æˆå¾ªç¯ä¸­æ›´æ–°
 	 update:function()
 	 {		
 		if((this.times!=0)&&(FrameState.currTime-this.startTime>this.speed))
@@ -108,9 +108,9 @@
 		if(this.times>0)--this.times;
 	 }
 	})
-   //¼ÇÂ¼part±àºÅ
+   //è®°å½•partç¼–å·
    _particle.SID = 0;
    _particle.ClassName = "Particle";
-   //×¢²áÀàµ½Àà¹¤³§ÖĞ
+   //æ³¨å†Œç±»åˆ°ç±»å·¥å‚ä¸­
    ClassFactory.regClass(_particle.ClassName,_particle);
 }(window))

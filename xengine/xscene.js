@@ -3,204 +3,204 @@
   * Copyright 2012 xiangfeng
   * Released under the MIT license
   * Please contact to xiangfenglf@163.com if you hava any question
-  * ÓÎÏ·³¡¾°Àà
+  * æ¸¸æˆåœºæ™¯ç±»
   */
  (function(win) {
- 	//³¡¾°¼àÌıÆ÷
- 	var _sceneEventListener = win.SceneEventListener = EventListener.extend({
- 		init: function(param) {
- 			//¼àÌıÆ÷ÊÇ·ñÉúĞ§
- 			this.enabled = true;
- 			param = param || {};
- 			this.onBeforeRender = param["beforeRender"] || this.onBeforeRender;
- 			this.onAfterRender = param["afterRender"] || this.onAfterRender;
- 		},
- 		//³¡¾°äÖÈ¾²Ù×÷Ç°´¥·¢
- 		onBeforeRender: function(scene) {
- 			return true;
- 		},
- 		//³¡¾°äÖÈ¾²Ù×÷ºó´¥·¢
- 		onAfterRender: function(scene) {
- 			return true;
- 		}
- 	});
- 	//³¡¾°Àà   
- 	var _scene = win.Scene = Class.extend({
- 		init: function(arg) {
- 			arg = arg || {};
- 			//³¡¾°Ãû³Æ 
- 			this.name = arg.name || ("Unnamed_" + (++_scene.SID));
- 			//Î»ÖÃĞÅÏ¢
- 			this.x = arg.x || 0;
- 			this.y = arg.y || 0;
- 			this.w = arg.w || 320;
- 			this.h = arg.h || 200;
- 			this.color = arg.color || "black";
- 			//³¡¾°ÈİÆ÷
- 			this.holder = $("<div id='sc_" + this.name + "' style='position:absolute;overflow:hidden;left:0px;top:0px'></div>")
- 			//°ó¶¨µÄcanvasÔªËØ,ÒÔºóµÄ¾«Áé¶¼ÔÚÕâ¸öcanvasÉÏ½øĞĞ»æÖÆ
- 			this.cvs = $("<canvas id='cv_" + this.name + "' style='z-index:-1;position:absolute;left:0px;top:0px'></canvas>");
- 			this.ctx = this.cvs[0].getContext("2d");
- 			this.setPos();
- 			this.setSize();
- 			this.setColor(this.color);
- 			this.holder.append(this.cvs);
- 			$(document.body).append(this.holder);
- 			//±£´æËùÓĞµÄ¼àÌıÆ÷
- 			this.listeners = [],
- 			//¼ÇÂ¼ËùÓĞµÄäÖÈ¾¶ÔÏó
- 			this.rObjs = [];
- 			//ÃüÃûµÄäÖÈ¾¶ÔÏó£¬±ãÓÚ¸ù¾İÃû³Æ¿ìËÙ²éÕÒ¶ÔÏó
- 			this.namedRObjs = {};
- 		},
- 		//´´½¨äÖÈ¾¶ÔÏó
- 		createRObj: function(className, arg) {
- 			className = className || "RenderObj";
- 			var obj = ClassFactory.newInstance(className, arg);
- 			this.addRObj(obj);
- 			return obj;
- 		},
- 		//Ìí¼Óµ½rObjsÖĞ
- 		addRObj: function(renderObj) {
- 			renderObj.owner = this;
- 			this.rObjs.push(renderObj);
- 			this.namedRObjs[renderObj.name] = renderObj;
- 		},
- 		//É¾³ı¶ÔÏó
- 		removeRObj: function(renderObj) {
- 			this.removeRObjByName(renderObj.name);
- 		},
- 		//¸ù¾İÃû³ÆÉèÖÃ¶ÔÏóÒÆ³ı±ê¼Ç
- 		removeRObjByName: function(name) {
- 			this.namedRObjs[name] && (this.namedRObjs[name].canRemove = true || true);
- 		},
- 		//ÒÆ³ıËùÓĞÖÃ¿ÉÒÆ³ı±ê¼ÇµÄ¶ÔÏó
- 		removeAllCanRemove: function() {
- 			for (var i = 0; i < this.rObjs.length; i++) {
- 				var o = this.rObjs[i];
- 				if (o.canRemove) {
- 					delete this.namedRObjs[o.name];
- 					this.rObjs.splice(i, 1);
- 				}
- 			}
- 		},
- 		//¸ù¾İÃû³Æ²éÕÒ¶ÔÏó
- 		getRObjByName: function(name) {
- 			return this.namedRObjs[name];
- 		},
- 		//Çå³ıËùÓĞäÖÈ¾¶ÔÏó
- 		clearRObj: function() {
- 			this.rObjs = [];
- 			this.namedRObjs = {};
- 		},
- 		//Ìí¼Ó¼àÌıÆ÷
- 		addListener: function(ln) {
- 			this.listeners.push(ln);
- 		},
- 		//Çå¿Õ¼àÌıÆ÷ÁĞ±í
- 		clearListener: function() {
- 			this.listeners.length = 0;
- 		},
- 		//¸üĞÂ³¡¾°
- 		update: function() {
- 			var o = [];
- 			for (var i = 0; i < this.rObjs.length; i++) {
- 				this.rObjs[i].update();
- 			}
- 			this.removeAllCanRemove();
- 		},
- 		//Ö´ĞĞäÖÈ¾	   
- 		render: function() {
- 			var ltns = this.listeners;
- 			//ÏÈÇå³ı³¡¾°£¬ÔÙäÖÈ¾
- 			this.clear();
- 			//Ö´ĞĞäÖÈ¾Ç°¼àÌıÆ÷
- 			for (var i = 0, len = ltns.length; i < len; i++) {
- 				ltns[i].enabled && ltns[i].onBeforeRender(this);
- 			}
- 			//ÅÅĞò
- 			this.sortRObj();
- 			this.renderRObj();
- 			//Ö´ĞĞäÖÈ¾ºó¼àÌıÆ÷         
- 			for (var i = 0; i < len; i++) {
- 				ltns[i].enabled && ltns[i].onAfterRender(this);
- 			}
- 		},
- 		//äÖÈ¾ËùÓĞ¶ÔÏó
- 		renderRObj: function() {
- 			for (var i = 0, len = this.rObjs.length; i < len; i++) {
+    //åœºæ™¯ç›‘å¬å™¨
+    var _sceneEventListener = win.SceneEventListener = EventListener.extend({
+        init: function(param) {
+            //ç›‘å¬å™¨æ˜¯å¦ç”Ÿæ•ˆ
+            this.enabled = true;
+            param = param || {};
+            this.onBeforeRender = param["beforeRender"] || this.onBeforeRender;
+            this.onAfterRender = param["afterRender"] || this.onAfterRender;
+        },
+        //åœºæ™¯æ¸²æŸ“æ“ä½œå‰è§¦å‘
+        onBeforeRender: function(scene) {
+            return true;
+        },
+        //åœºæ™¯æ¸²æŸ“æ“ä½œåè§¦å‘
+        onAfterRender: function(scene) {
+            return true;
+        }
+    });
+    //åœºæ™¯ç±»   
+    var _scene = win.Scene = Class.extend({
+        init: function(arg) {
+            arg = arg || {};
+            //åœºæ™¯åç§° 
+            this.name = arg.name || ("Unnamed_" + (++_scene.SID));
+            //ä½ç½®ä¿¡æ¯
+            this.x = arg.x || 0;
+            this.y = arg.y || 0;
+            this.w = arg.w || 320;
+            this.h = arg.h || 200;
+            this.color = arg.color || "black";
+            //åœºæ™¯å®¹å™¨
+            this.holder = $("<div id='sc_" + this.name + "' style='position:absolute;overflow:hidden;left:0px;top:0px'></div>")
+            //ç»‘å®šçš„canvaså…ƒç´ ,ä»¥åçš„ç²¾çµéƒ½åœ¨è¿™ä¸ªcanvasä¸Šè¿›è¡Œç»˜åˆ¶
+            this.cvs = $("<canvas id='cv_" + this.name + "' style='z-index:-1;position:absolute;left:0px;top:0px'></canvas>");
+            this.ctx = this.cvs[0].getContext("2d");
+            this.setPos();
+            this.setSize();
+            this.setColor(this.color);
+            this.holder.append(this.cvs);
+            $(document.body).append(this.holder);
+            //ä¿å­˜æ‰€æœ‰çš„ç›‘å¬å™¨
+            this.listeners = [],
+            //è®°å½•æ‰€æœ‰çš„æ¸²æŸ“å¯¹è±¡
+            this.rObjs = [];
+            //å‘½åçš„æ¸²æŸ“å¯¹è±¡ï¼Œä¾¿äºæ ¹æ®åç§°å¿«é€ŸæŸ¥æ‰¾å¯¹è±¡
+            this.namedRObjs = {};
+        },
+        //åˆ›å»ºæ¸²æŸ“å¯¹è±¡
+        createRObj: function(className, arg) {
+            className = className || "RenderObj";
+            var obj = ClassFactory.newInstance(className, arg);
+            this.addRObj(obj);
+            return obj;
+        },
+        //æ·»åŠ åˆ°rObjsä¸­
+        addRObj: function(renderObj) {
+            renderObj.owner = this;
+            this.rObjs.push(renderObj);
+            this.namedRObjs[renderObj.name] = renderObj;
+        },
+        //åˆ é™¤å¯¹è±¡
+        removeRObj: function(renderObj) {
+            this.removeRObjByName(renderObj.name);
+        },
+        //æ ¹æ®åç§°è®¾ç½®å¯¹è±¡ç§»é™¤æ ‡è®°
+        removeRObjByName: function(name) {
+            this.namedRObjs[name] && (this.namedRObjs[name].canRemove = true || true);
+        },
+        //ç§»é™¤æ‰€æœ‰ç½®å¯ç§»é™¤æ ‡è®°çš„å¯¹è±¡
+        removeAllCanRemove: function() {
+            for (var i = 0; i < this.rObjs.length; i++) {
+                var o = this.rObjs[i];
+                if (o.canRemove) {
+                    delete this.namedRObjs[o.name];
+                    this.rObjs.splice(i, 1);
+                }
+            }
+        },
+        //æ ¹æ®åç§°æŸ¥æ‰¾å¯¹è±¡
+        getRObjByName: function(name) {
+            return this.namedRObjs[name];
+        },
+        //æ¸…é™¤æ‰€æœ‰æ¸²æŸ“å¯¹è±¡
+        clearRObj: function() {
+            this.rObjs = [];
+            this.namedRObjs = {};
+        },
+        //æ·»åŠ ç›‘å¬å™¨
+        addListener: function(ln) {
+            this.listeners.push(ln);
+        },
+        //æ¸…ç©ºç›‘å¬å™¨åˆ—è¡¨
+        clearListener: function() {
+            this.listeners.length = 0;
+        },
+        //æ›´æ–°åœºæ™¯
+        update: function() {
+            var o = [];
+            for (var i = 0; i < this.rObjs.length; i++) {
+                this.rObjs[i].update();
+            }
+            this.removeAllCanRemove();
+        },
+        //æ‰§è¡Œæ¸²æŸ“     
+        render: function() {
+            var ltns = this.listeners;
+            //å…ˆæ¸…é™¤åœºæ™¯ï¼Œå†æ¸²æŸ“
+            this.clear();
+            //æ‰§è¡Œæ¸²æŸ“å‰ç›‘å¬å™¨
+            for (var i = 0, len = ltns.length; i < len; i++) {
+                ltns[i].enabled && ltns[i].onBeforeRender(this);
+            }
+            //æ’åº
+            this.sortRObj();
+            this.renderRObj();
+            //æ‰§è¡Œæ¸²æŸ“åç›‘å¬å™¨         
+            for (var i = 0; i < len; i++) {
+                ltns[i].enabled && ltns[i].onAfterRender(this);
+            }
+        },
+        //æ¸²æŸ“æ‰€æœ‰å¯¹è±¡
+        renderRObj: function() {
+            for (var i = 0, len = this.rObjs.length; i < len; i++) {
 
- 				this.ctx.save();
- 				this.rObjs[i].isVisible && this.rObjs[i].render(this.ctx);
- 				this.ctx.restore();
- 			}
- 		},
- 		//°´zIdxÅÅĞòËùÓĞäÖÈ¾¶ÔÏó£¬äÖÈ¾°´Êı×ÖÔ½Ğ¡Ô½ÏÈäÖÈ¾
- 		sortRObj: function() {
- 			this.rObjs.sort(function(o1, o2) {
- 				return o1.zIdx - o2.zIdx;
- 			})
- 		},
- 		//ÉèÖÃÎ»ÖÃ
- 		setPos: function(x, y) {
- 			this.x = x || this.x;
- 			this.y = y || this.y;
- 			this.holder.css("left", this.x).css("top", this.y);
- 		},
- 		//ÉèÖÃ´óĞ¡
- 		setSize: function(w, h) {
- 			this.w = w || this.w;
- 			this.h = h || this.h;
- 			this.holder.css("width", this.w).css("height", this.h);
- 			this.cvs.attr("width", this.w).attr("height", this.h);
- 		},
- 		//ÉèÖÃcanvas±³¾°
- 		setColor: function(color) {
- 			this.color = color || "black";
- 			this.holder.css("background-color", this.color);
- 		},
- 		//Çå³ıcanvas±³¾°
- 		clear: function() {
- 			this.ctx.clearRect(0, 0, this.w, this.h);
- 		},
- 		//ÏÔÊ¾
- 		show: function() {
- 			this.holder.show();
- 		},
- 		//Òş²Ø
- 		hide: function() {
- 			this.holder.hide();
- 		},
- 		fadeOut: function(time, fn) {
- 			this.holder.fadeOut(time, fn);
- 		},
- 		fadeIn: function(time, fn) {
- 			this.holder.fadeIn(time, fn);
- 		},
- 		//ÉèÖÃ±³¾°,pattern:0(¾ÓÖĞ),1(À­Éì),Ä¬ÈÏ(Æ½ÆÌ)
- 		setBGImg: function(imgURL, pattern) {
- 			this.holder.css("background-image", "url(" + imgURL + ")");
- 			switch (pattern) {
- 				case 0:
- 					this.holder.css("background-repeat", "no-repeat");
- 					this.holder.css("background-position", "center");
- 					break;
- 				case 1:
- 					this.holder.css("background-size", this.w + "px " + this.h + "px ");
- 					break;
- 			}
- 		},
- 		//Çå³ıÏà¹ØËùÓĞ×ÊÔ´
- 		clean: function() {
- 			this.listeners = null;
- 			this.cvs.remove();
- 			this.holder.remove();
- 			this.cvs = this.holder = this.ctx = null;
- 		}
- 	});
- 	//¼ÇÂ¼scene±àºÅ
- 	_scene.SID = 0;
- 	_scene.ClassName = "Scene";
- 	//×¢²áÀàµ½Àà¹¤³§ÖĞ
- 	ClassFactory.regClass(_scene.ClassName, _scene);
+                this.ctx.save();
+                this.rObjs[i].isVisible && this.rObjs[i].render(this.ctx);
+                this.ctx.restore();
+            }
+        },
+        //æŒ‰zIdxæ’åºæ‰€æœ‰æ¸²æŸ“å¯¹è±¡ï¼Œæ¸²æŸ“æŒ‰æ•°å­—è¶Šå°è¶Šå…ˆæ¸²æŸ“
+        sortRObj: function() {
+            this.rObjs.sort(function(o1, o2) {
+                return o1.zIdx - o2.zIdx;
+            })
+        },
+        //è®¾ç½®ä½ç½®
+        setPos: function(x, y) {
+            this.x = x || this.x;
+            this.y = y || this.y;
+            this.holder.css("left", this.x).css("top", this.y);
+        },
+        //è®¾ç½®å¤§å°
+        setSize: function(w, h) {
+            this.w = w || this.w;
+            this.h = h || this.h;
+            this.holder.css("width", this.w).css("height", this.h);
+            this.cvs.attr("width", this.w).attr("height", this.h);
+        },
+        //è®¾ç½®canvasèƒŒæ™¯
+        setColor: function(color) {
+            this.color = color || "black";
+            this.holder.css("background-color", this.color);
+        },
+        //æ¸…é™¤canvasèƒŒæ™¯
+        clear: function() {
+            this.ctx.clearRect(0, 0, this.w, this.h);
+        },
+        //æ˜¾ç¤º
+        show: function() {
+            this.holder.show();
+        },
+        //éšè—
+        hide: function() {
+            this.holder.hide();
+        },
+        fadeOut: function(time, fn) {
+            this.holder.fadeOut(time, fn);
+        },
+        fadeIn: function(time, fn) {
+            this.holder.fadeIn(time, fn);
+        },
+        //è®¾ç½®èƒŒæ™¯,pattern:0(å±…ä¸­),1(æ‹‰ä¼¸),é»˜è®¤(å¹³é“º)
+        setBGImg: function(imgURL, pattern) {
+            this.holder.css("background-image", "url(" + imgURL + ")");
+            switch (pattern) {
+                case 0:
+                    this.holder.css("background-repeat", "no-repeat");
+                    this.holder.css("background-position", "center");
+                    break;
+                case 1:
+                    this.holder.css("background-size", this.w + "px " + this.h + "px ");
+                    break;
+            }
+        },
+        //æ¸…é™¤ç›¸å…³æ‰€æœ‰èµ„æº
+        clean: function() {
+            this.listeners = null;
+            this.cvs.remove();
+            this.holder.remove();
+            this.cvs = this.holder = this.ctx = null;
+        }
+    });
+    //è®°å½•sceneç¼–å·
+    _scene.SID = 0;
+    _scene.ClassName = "Scene";
+    //æ³¨å†Œç±»åˆ°ç±»å·¥å‚ä¸­
+    ClassFactory.regClass(_scene.ClassName, _scene);
  }(window))

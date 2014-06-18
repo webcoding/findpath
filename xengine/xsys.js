@@ -3,362 +3,362 @@
   * Copyright 2012 xiangfeng
   * Released under the MIT license
   * Please contact to xiangfenglf@163.com if you hava any question
-  * ÓÎÏ·ÏµÍ³Àà
+  * æ¸¸æˆç³»ç»Ÿç±»
   */
  (function(win) {
- 	//ÓÎÏ·×´Ì¬Àà
- 	var _FState = win.FrameState = {
- 		//×î´óÖ¡Êı
- 		maxFrame: 0,
- 		//×îĞ¡Ö¡Êı
- 		minFrame: 9999,
- 		//¼´Ê±Ö¡Êı
- 		currFrame: 0,
- 		//µ±Ç°Ê±¼ä
- 		currTime: 0,
- 		//Ã¿Ö¡Á÷ÊÅµÄÊ±¼ä
- 		elapseTime: 0,
- 		//ÓÃÓÚÍ³¼ÆÃ¿Ãë¿ªÊ¼Ê±¼ä
- 		_sTime: 0,
- 		//Í³¼ÆÃ¿Ãë×ÜÖ¡Êı
- 		_sTFrame: 0,
- 		//Æô¶¯Ö¡×´Ì¬¼ì²âÆ÷
- 		start: function() {
- 			this.currTime = this._sTime = new Date();
- 		},
- 		//Ã¿Ö¡ÔÚÓÎÏ·Ñ­»·Ç°µ÷ÓÃ´Ë·½·¨£¬¸üĞÂºÍ¼ÆËãÖ¡Êı
- 		update: function() {
- 			var fTime = new Date();
- 			if (fTime - this._sTime >= 1000) {
- 				this.currFrame = this._sTFrame;
- 				this.maxFrame = (this.currFrame > this.maxFrame) ? this.currFrame : this.maxFrame;
- 				this.minFrame = (this.currFrame < this.minFrame) ? this.currFrame : this.minFrame;
- 				this._sTFrame = 0;
- 				this._sTime = fTime;
- 			} else {
- 				++this._sTFrame;
- 			}
- 			this.elapseTime = fTime - this.currTime;
- 			this.currTime = fTime;
- 		}
- 	};
- 	//ÓÎÏ·IO
- 	//Êó±êÀà
- 	win.Mouse = (function() {
- 		var _M = {
- 			x: 0,
- 			y: 0,
- 			ox: 0,
- 			oy: 0,
- 			w: 0, //Êó±êÖĞ¼ü¹ö¶¯´ÎÊı
- 			bs: [0, 0, 0], //Êó±ê×´Ì¬,
- 			target: null,
- 			isMoveCacheEnable: false, //ÊÇ·ñÆôÓÃ¼ÇÂ¼ÒÆ¶¯µã»º´æ
- 			cache: [], //¼ÇÂ¼Êó±êÒÆ¶¯µã»º´æ
- 			dlgEvent: {
- 				"up": null,
- 				"down": null,
- 				"click": null,
- 				"dbclick": null,
- 				"move": null,
- 				"wheel": null
- 			} //´úÀíÊÂ¼ş´¦Àí
- 		};
- 		//Ä¬ÈÏ¼ÇÂ¼30¸öµãµÄ»º´æ
- 		var _MAX_POINT_CACHE = 60;
- 		var eWeelDelta = 120;
- 		//ÉèÖÃÄ¿±ê
+    //æ¸¸æˆçŠ¶æ€ç±»
+    var _FState = win.FrameState = {
+        //æœ€å¤§å¸§æ•°
+        maxFrame: 0,
+        //æœ€å°å¸§æ•°
+        minFrame: 9999,
+        //å³æ—¶å¸§æ•°
+        currFrame: 0,
+        //å½“å‰æ—¶é—´
+        currTime: 0,
+        //æ¯å¸§æµé€çš„æ—¶é—´
+        elapseTime: 0,
+        //ç”¨äºç»Ÿè®¡æ¯ç§’å¼€å§‹æ—¶é—´
+        _sTime: 0,
+        //ç»Ÿè®¡æ¯ç§’æ€»å¸§æ•°
+        _sTFrame: 0,
+        //å¯åŠ¨å¸§çŠ¶æ€æ£€æµ‹å™¨
+        start: function() {
+            this.currTime = this._sTime = new Date();
+        },
+        //æ¯å¸§åœ¨æ¸¸æˆå¾ªç¯å‰è°ƒç”¨æ­¤æ–¹æ³•ï¼Œæ›´æ–°å’Œè®¡ç®—å¸§æ•°
+        update: function() {
+            var fTime = new Date();
+            if (fTime - this._sTime >= 1000) {
+                this.currFrame = this._sTFrame;
+                this.maxFrame = (this.currFrame > this.maxFrame) ? this.currFrame : this.maxFrame;
+                this.minFrame = (this.currFrame < this.minFrame) ? this.currFrame : this.minFrame;
+                this._sTFrame = 0;
+                this._sTime = fTime;
+            } else {
+                ++this._sTFrame;
+            }
+            this.elapseTime = fTime - this.currTime;
+            this.currTime = fTime;
+        }
+    };
+    //æ¸¸æˆIO
+    //é¼ æ ‡ç±»
+    win.Mouse = (function() {
+        var _M = {
+            x: 0,
+            y: 0,
+            ox: 0,
+            oy: 0,
+            w: 0, //é¼ æ ‡ä¸­é”®æ»šåŠ¨æ¬¡æ•°
+            bs: [0, 0, 0], //é¼ æ ‡çŠ¶æ€,
+            target: null,
+            isMoveCacheEnable: false, //æ˜¯å¦å¯ç”¨è®°å½•ç§»åŠ¨ç‚¹ç¼“å­˜
+            cache: [], //è®°å½•é¼ æ ‡ç§»åŠ¨ç‚¹ç¼“å­˜
+            dlgEvent: {
+                "up": null,
+                "down": null,
+                "click": null,
+                "dbclick": null,
+                "move": null,
+                "wheel": null
+            } //ä»£ç†äº‹ä»¶å¤„ç†
+        };
+        //é»˜è®¤è®°å½•30ä¸ªç‚¹çš„ç¼“å­˜
+        var _MAX_POINT_CACHE = 60;
+        var eWeelDelta = 120;
+        //è®¾ç½®ç›®æ ‡
 
- 		function setTarget(e) {
- 			_M.target = e.target;
- 		}
- 		//ÉèÖÃÊó±êÎ»ÖÃ
+        function setTarget(e) {
+            _M.target = e.target;
+        }
+        //è®¾ç½®é¼ æ ‡ä½ç½®
 
- 		function setMPos(e) {
- 			_M.x = e.pageX;
- 			_M.y = e.pageY;
- 		}
- 		//ÉèÖÃÊó±ê°´¼ü×´Ì¬
+        function setMPos(e) {
+            _M.x = e.pageX;
+            _M.y = e.pageY;
+        }
+        //è®¾ç½®é¼ æ ‡æŒ‰é”®çŠ¶æ€
 
- 		function setMBtnState(e, flag) {
- 			_M.bs[e.button] = flag;
- 		}
- 		//Ìí¼Óµãµ½CacheÖĞ
+        function setMBtnState(e, flag) {
+            _M.bs[e.button] = flag;
+        }
+        //æ·»åŠ ç‚¹åˆ°Cacheä¸­
 
- 		function addToMPCache(x, y) {
- 			if (_M.cache.length > _MAX_POINT_CACHE) {
- 				_M.cache.shift();
- 				_M.cache.shift();
- 			}
- 			_M.cache.push(x);
- 			_M.cache.push(y);
- 		}
- 		//»ñÈ¡»º³åÇøÖĞ×îÇ°µÄ×ø±ê£¬»º³åÄ£Ê½ÏÂÓÃ
+        function addToMPCache(x, y) {
+            if (_M.cache.length > _MAX_POINT_CACHE) {
+                _M.cache.shift();
+                _M.cache.shift();
+            }
+            _M.cache.push(x);
+            _M.cache.push(y);
+        }
+        //è·å–ç¼“å†²åŒºä¸­æœ€å‰çš„åæ ‡ï¼Œç¼“å†²æ¨¡å¼ä¸‹ç”¨
 
- 		function get() {
- 			var x = _M.cache.shift(),
- 				y = _M.cache.shift();
- 			return [x, y];
- 		}
- 		//Çå³ıËùÓĞ»º´æ
+        function get() {
+            var x = _M.cache.shift(),
+                y = _M.cache.shift();
+            return [x, y];
+        }
+        //æ¸…é™¤æ‰€æœ‰ç¼“å­˜
 
- 		function clearCache() {
- 			_M.cache = [];
- 		}
- 		//ÉèÖÃÊÂ¼ş´úÀí
+        function clearCache() {
+            _M.cache = [];
+        }
+        //è®¾ç½®äº‹ä»¶ä»£ç†
 
- 		function setDelegatedEvent(eName, fn) {
- 			_M.dlgEvent[eName] = fn;
- 		}
- 		//É¾³ıÊÂ¼ş´úÀí
+        function setDelegatedEvent(eName, fn) {
+            _M.dlgEvent[eName] = fn;
+        }
+        //åˆ é™¤äº‹ä»¶ä»£ç†
 
- 		function delDelegatedEvent(eName) {
- 			_M.dlgEvent[eName] = null;
- 		}
- 		//ÉèÖÃÊÇ·ñ¿ÉÓÃ
+        function delDelegatedEvent(eName) {
+            _M.dlgEvent[eName] = null;
+        }
+        //è®¾ç½®æ˜¯å¦å¯ç”¨
 
- 		function setEnabled(flag) {
- 			if (flag) {
- 				document.oncontextmenu = function() {
- 					return false
- 				};
- 				document.onmousemove = doMove;
- 				document.onmousedown = doDown;
- 				document.onmouseup = doUp;
- 				document.onclick = doClick;
- 				document.ondblick = doDBClick;
- 				document.onmousewheel = doWheel;
- 			} else {
- 				document.onmousemove = null;
- 				document.onmousedown = null;
- 				document.onmouseup = null;
- 				document.onclick = null;
- 				document.ondblick = null;
- 				document.onmousewheel = null;
- 			}
- 		}
+        function setEnabled(flag) {
+            if (flag) {
+                document.oncontextmenu = function() {
+                    return false
+                };
+                document.onmousemove = doMove;
+                document.onmousedown = doDown;
+                document.onmouseup = doUp;
+                document.onclick = doClick;
+                document.ondblick = doDBClick;
+                document.onmousewheel = doWheel;
+            } else {
+                document.onmousemove = null;
+                document.onmousedown = null;
+                document.onmouseup = null;
+                document.onclick = null;
+                document.ondblick = null;
+                document.onmousewheel = null;
+            }
+        }
 
- 		function doMove(e) {
- 			e.preventDefault();
- 			setMPos(e);
- 			setTarget(e);
- 			if (_M.isMoveCacheEnable) {
- 				addToMPCache(_M.x, _M.y);
- 			}
- 			_M.dlgEvent.move && _M.dlgEvent.move(e);
- 		}
+        function doMove(e) {
+            e.preventDefault();
+            setMPos(e);
+            setTarget(e);
+            if (_M.isMoveCacheEnable) {
+                addToMPCache(_M.x, _M.y);
+            }
+            _M.dlgEvent.move && _M.dlgEvent.move(e);
+        }
 
- 		function doDown(e) {
- 			//e.preventDefault();
- 			setMBtnState(e, 1);
- 			setTarget(e);
- 			_M.ox = e.pageX;
- 			_M.oy = e.pageY;
- 			_M.dlgEvent.down && _M.dlgEvent.down(e);
- 		}
+        function doDown(e) {
+            //e.preventDefault();
+            setMBtnState(e, 1);
+            setTarget(e);
+            _M.ox = e.pageX;
+            _M.oy = e.pageY;
+            _M.dlgEvent.down && _M.dlgEvent.down(e);
+        }
 
- 		function doUp(e) {
- 			setMBtnState(e, 0);
- 			setTarget(e);
- 			_M.dlgEvent.up && _M.dlgEvent.up(e);
- 		}
+        function doUp(e) {
+            setMBtnState(e, 0);
+            setTarget(e);
+            _M.dlgEvent.up && _M.dlgEvent.up(e);
+        }
 
- 		function doClick(e) {
- 			_M.dlgEvent.click && _M.dlgEvent.click(e);
- 		}
+        function doClick(e) {
+            _M.dlgEvent.click && _M.dlgEvent.click(e);
+        }
 
- 		function doDBClick(e) {
- 			_M.dlgEvent.dbclick && _M.dlgEvent.dbclick(e);
- 		}
+        function doDBClick(e) {
+            _M.dlgEvent.dbclick && _M.dlgEvent.dbclick(e);
+        }
 
- 		function doWheel(e) {
- 			this.w += (e.wheelDelta >= eWeelDelta) ? 1 : -1;
- 			_M.dlgEvent.doWheel && _M.dlgEvent.doWheel(e);
- 		}
- 		//³õÊ¼»¯
- 		setEnabled(true);
- 		return {
- 			gTarget: function() {
- 				return _M.target;
- 			},
- 			gPos: function(v3) {
- 				v3.x = _M.x;
- 				v3.y = _M.y;
- 				v3.z = _M.w
- 			},
- 			gX: function() {
- 				return _M.x
- 			},
- 			gY: function() {
- 				return _M.y
- 			},
- 			gW: function() {
- 				return _M.w
- 			},
- 			gBtnState: function(btn) {
- 				return _M.bs[btn];
- 			},
- 			gXOff: function() {
- 				return _M.x - _M.ox
- 			},
- 			gYOff: function() {
- 				return _M.y - _M.oy
- 			},
- 			gCPT: function() {
- 				return get();
- 			},
- 			cCHE: function() {
- 				clearCache();
- 			},
- 			sDLG: function(eName, fn) {
- 				setDelegatedEvent(eName, fn);
- 			},
- 			dDLG: function(eName) {
- 				delDelegatedEvent(eName);
- 			},
- 			sMode: function(mode) {
- 				_M.isMoveCacheEnable = (mode === 1);
- 			} //0:Á¢¼´Ä£Ê½£¬1:»º³åÄ£Ê½
- 		};
- 	}());
- 	//¼üÅÌÀà
- 	win.Key = (function() {
- 		var _K = {
- 			A: 65,
- 			B: 66,
- 			C: 67,
- 			D: 68,
- 			E: 69,
- 			F: 70,
- 			G: 71,
- 			H: 72,
- 			I: 73,
- 			J: 74,
- 			K: 75,
- 			L: 76,
- 			M: 77,
- 			N: 78,
- 			O: 79,
- 			P: 80,
- 			Q: 81,
- 			R: 82,
- 			S: 83,
- 			T: 84,
- 			U: 85,
- 			V: 86,
- 			W: 87,
- 			X: 88,
- 			Y: 89,
- 			Z: 90,
- 			N0: 48,
- 			N1: 49,
- 			N2: 50,
- 			N3: 51,
- 			N4: 52,
- 			N5: 53,
- 			N6: 54,
- 			N7: 55,
- 			N8: 56,
- 			N9: 57,
- 			LEFT: 37,
- 			RIGHT: 39,
- 			UP: 38,
- 			DOWN: 40,
- 			ENTER: 13,
- 			SPACE: 32,
- 			TAB: 9,
- 			SHIFT: 16,
- 			ALT: 18,
- 			CTRL: 17,
- 			//¼ÇÂ¼¼üÅÌ»º³å×î´óÊı
- 			MAX_KEY_CACHE: 20,
- 			//¼ÇÂ¼¼üÅÌ×´Ì¬
- 			states: new Array(255),
- 			cache: [],
- 			//ÊÂ¼ş´úÀí¶ÔÏó
- 			dlgEvent: {
- 				"up": null,
- 				"down": null
- 			},
- 			isEnableCache: false,
- 			//ÉèÖÃÊÂ¼ş´úÀí
- 			setDLG: function(eName, fn) {
- 				this.dlgEvent[eName] = fn;
- 			},
- 			//É¾³ıÊÂ¼ş´úÀí
- 			delDLG: function(eName) {
- 				this.dlgEvent[eName] = null;
- 			},
- 			//ÉèÖÃÊÇ·ñ¿ÉÓÃ
- 			setEnabled: function(flag) {
- 				var self = this;
- 				if (flag) {
- 					var st = this.states;
- 					this.clearKeyStates();
- 					this.sMode(0);
- 					document.onkeydown = function(e) {
- 						st[event.keyCode] = 1;
- 						if (self.isEnableCache) {
- 							if (self.cache.length > MAX_KEY_CACHE) {
- 								self.cache.shift();
- 							}
- 							self.cache.push(e.keyCode);
- 						}
- 						self.dlgEvent.down && self.dlgEvent.down(e);
- 					};
- 					document.onkeyup = function(e) {
- 						st[e.keyCode] = 0;
- 						self.dlgEvent.up && self.dlgEvent.up(e);
- 					}
- 				} else {
- 					document.onkeydown = null;
- 					document.onkeyup = null;
- 				}
- 			},
- 			//ÅĞ¶ÏÊÇ·ñ°´¼ü
- 			pressed: function(key) {
- 				return this.states[key];
- 			},
- 			//»ñÈ¡»º³åÇøÖĞ×îÇ°µÄ°´¼ü
- 			get: function() {
- 				return this.cache.shift();
- 			},
- 			//°´ÁËkeysÊı×éÖĞÈÎºÎ¼ü
- 			pAny: function(keys) {
- 				var result = false;
- 				for (var i = 0; i < keys.length; i++) {
- 					if (this.states[keys[i]]) {
- 						result = true;
- 						break;
- 					}
- 				}
- 				return result;
- 			},
- 			//°´ÏÂËùÓĞ¼ü,state 1:down 0:up
- 			pAll: function(keys, state) {
- 				var result = true;
- 				for (var i = 0; i < keys.length; i++) {
- 					if (this.states[keys[i]] == !state) {
- 						result = false;
- 						break;
- 					}
- 				}
- 				return result;
- 			},
- 			clearKeyStates: function() {
- 				for (var i = 0; i < 255; i++) {
- 					this.states[i] = 0;
- 				}
- 			},
- 			clearCache: function() {
- 				this.cache = [];
- 			},
- 			sMode: function(mode) {
- 				this.isEnableCache = (mode === 1);
- 			}
- 		}
- 		//³õÊ¼»¯
- 		_K.setEnabled(true);
- 		return _K;
- 	}());
+        function doWheel(e) {
+            this.w += (e.wheelDelta >= eWeelDelta) ? 1 : -1;
+            _M.dlgEvent.doWheel && _M.dlgEvent.doWheel(e);
+        }
+        //åˆå§‹åŒ–
+        setEnabled(true);
+        return {
+            gTarget: function() {
+                return _M.target;
+            },
+            gPos: function(v3) {
+                v3.x = _M.x;
+                v3.y = _M.y;
+                v3.z = _M.w
+            },
+            gX: function() {
+                return _M.x
+            },
+            gY: function() {
+                return _M.y
+            },
+            gW: function() {
+                return _M.w
+            },
+            gBtnState: function(btn) {
+                return _M.bs[btn];
+            },
+            gXOff: function() {
+                return _M.x - _M.ox
+            },
+            gYOff: function() {
+                return _M.y - _M.oy
+            },
+            gCPT: function() {
+                return get();
+            },
+            cCHE: function() {
+                clearCache();
+            },
+            sDLG: function(eName, fn) {
+                setDelegatedEvent(eName, fn);
+            },
+            dDLG: function(eName) {
+                delDelegatedEvent(eName);
+            },
+            sMode: function(mode) {
+                _M.isMoveCacheEnable = (mode === 1);
+            } //0:ç«‹å³æ¨¡å¼ï¼Œ1:ç¼“å†²æ¨¡å¼
+        };
+    }());
+    //é”®ç›˜ç±»
+    win.Key = (function() {
+        var _K = {
+            A: 65,
+            B: 66,
+            C: 67,
+            D: 68,
+            E: 69,
+            F: 70,
+            G: 71,
+            H: 72,
+            I: 73,
+            J: 74,
+            K: 75,
+            L: 76,
+            M: 77,
+            N: 78,
+            O: 79,
+            P: 80,
+            Q: 81,
+            R: 82,
+            S: 83,
+            T: 84,
+            U: 85,
+            V: 86,
+            W: 87,
+            X: 88,
+            Y: 89,
+            Z: 90,
+            N0: 48,
+            N1: 49,
+            N2: 50,
+            N3: 51,
+            N4: 52,
+            N5: 53,
+            N6: 54,
+            N7: 55,
+            N8: 56,
+            N9: 57,
+            LEFT: 37,
+            RIGHT: 39,
+            UP: 38,
+            DOWN: 40,
+            ENTER: 13,
+            SPACE: 32,
+            TAB: 9,
+            SHIFT: 16,
+            ALT: 18,
+            CTRL: 17,
+            //è®°å½•é”®ç›˜ç¼“å†²æœ€å¤§æ•°
+            MAX_KEY_CACHE: 20,
+            //è®°å½•é”®ç›˜çŠ¶æ€
+            states: new Array(255),
+            cache: [],
+            //äº‹ä»¶ä»£ç†å¯¹è±¡
+            dlgEvent: {
+                "up": null,
+                "down": null
+            },
+            isEnableCache: false,
+            //è®¾ç½®äº‹ä»¶ä»£ç†
+            setDLG: function(eName, fn) {
+                this.dlgEvent[eName] = fn;
+            },
+            //åˆ é™¤äº‹ä»¶ä»£ç†
+            delDLG: function(eName) {
+                this.dlgEvent[eName] = null;
+            },
+            //è®¾ç½®æ˜¯å¦å¯ç”¨
+            setEnabled: function(flag) {
+                var self = this;
+                if (flag) {
+                    var st = this.states;
+                    this.clearKeyStates();
+                    this.sMode(0);
+                    document.onkeydown = function(e) {
+                        st[event.keyCode] = 1;
+                        if (self.isEnableCache) {
+                            if (self.cache.length > MAX_KEY_CACHE) {
+                                self.cache.shift();
+                            }
+                            self.cache.push(e.keyCode);
+                        }
+                        self.dlgEvent.down && self.dlgEvent.down(e);
+                    };
+                    document.onkeyup = function(e) {
+                        st[e.keyCode] = 0;
+                        self.dlgEvent.up && self.dlgEvent.up(e);
+                    }
+                } else {
+                    document.onkeydown = null;
+                    document.onkeyup = null;
+                }
+            },
+            //åˆ¤æ–­æ˜¯å¦æŒ‰é”®
+            pressed: function(key) {
+                return this.states[key];
+            },
+            //è·å–ç¼“å†²åŒºä¸­æœ€å‰çš„æŒ‰é”®
+            get: function() {
+                return this.cache.shift();
+            },
+            //æŒ‰äº†keysæ•°ç»„ä¸­ä»»ä½•é”®
+            pAny: function(keys) {
+                var result = false;
+                for (var i = 0; i < keys.length; i++) {
+                    if (this.states[keys[i]]) {
+                        result = true;
+                        break;
+                    }
+                }
+                return result;
+            },
+            //æŒ‰ä¸‹æ‰€æœ‰é”®,state 1:down 0:up
+            pAll: function(keys, state) {
+                var result = true;
+                for (var i = 0; i < keys.length; i++) {
+                    if (this.states[keys[i]] == !state) {
+                        result = false;
+                        break;
+                    }
+                }
+                return result;
+            },
+            clearKeyStates: function() {
+                for (var i = 0; i < 255; i++) {
+                    this.states[i] = 0;
+                }
+            },
+            clearCache: function() {
+                this.cache = [];
+            },
+            sMode: function(mode) {
+                this.isEnableCache = (mode === 1);
+            }
+        }
+        //åˆå§‹åŒ–
+        _K.setEnabled(true);
+        return _K;
+    }());
  }(window))

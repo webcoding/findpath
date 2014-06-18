@@ -3,125 +3,125 @@
   * Copyright 2012 xiangfeng
   * Released under the MIT license
   * Please contact to xiangfenglf@163.com if you hava any question
-  * ÓÎÏ·³¡¾°¹ÜÀíÀà
+  * æ¸¸æˆåœºæ™¯ç®¡ç†ç±»
   */
  (function(win) {
- 	//³¡¾°¹ÜÀíÀà   
- 	var _sceneman = win.SceneManager = Class.extend({
- 		init: function(param) {
- 			//ÒÔÃüÃû·½Ê½±£´æ,±ãÓÚ¿ìËÙÍ¨¹ıÃû³Æ»ñÈ¡
- 			this.namedScenes = {};
- 			//ÒÔ¶ÑÕ»·½Ê½±£´æËùÓĞ³¡¾°£¬×îºóµÄÔªËØÎªÕ»¶¥
- 			this.scenes = [];
- 		},
- 		//´´½¨ĞÂµÄ³¡¾°,Í¨¹ıÀàÃûºÍ²ÎÊı´´½¨,ÒòÎªscene¿ÉÄÜÓĞ×Ô¼ºµÄ×ÓÀà,ĞèÒª×¢ÒâµÄÊÇargÊÇ±ØĞëÒªÊÇÊı×éĞÎÊ½
- 		createScene: function(sceneClass, args) {
- 			var sc = null;
- 			if (arguments.length == 1) {
- 				sc = ClassFactory.newInstance("Scene", arguments[0]);
- 			} else {
- 				sceneClass = sceneClass || "Scene";
- 				sc = ClassFactory.newInstance(sceneClass, args);
- 			}
- 			this.push(sc);
- 			return sc;
- 		},
- 		//³¡¾°ÖØÅÅĞò
- 		sortSceneIdx: function() {
- 			for (var i = 0, len = this.scenes.length; i < len; i++) {
- 				var sc = this.scenes[i];
- 				sc.holder.css("z-index", i);
- 			}
- 		},
- 		//Ñ¹Èëscene³¡¾°
- 		push: function(scene) {
- 			if (!this.getScene(scene.name)) {
- 				this.scenes.push(scene);
- 				this.namedScenes[scene.name] = scene;
- 				this.sortSceneIdx();
- 			}
- 		},
- 		//ÒÆ³ı¶¥²¿³¡¾°
- 		pop: function() {
- 			var sc = this.scenes.pop();
- 			if (sc != null) {
- 				sc.clean();
- 				delete this.namedScenes[sc.name];
- 				this.sortSceneIdx();
- 			}
- 		},
- 		//É¾³ı³¡¾°
- 		remove: function(name) {
- 			var sc = this.getScene(name);
- 			if (sc != null) {
- 				sc.clean();
- 				delete this.namedScenes[name];
- 				ArrayUtil.removeFn(this.scenes, function(s) {
- 					return s.name === name;
- 				})
- 				this.sortSceneIdx();
- 			}
- 		},
- 		//½»»»³¡¾°Î»ÖÃ
- 		swap: function(from, to) {
- 			if (from >= 0 && from <= this.scenes.length - 1 && to >= 0 && to <= this.scenes.length - 1) {
- 				var sc = this.scenes[from];
- 				this.scenes[from] = this.scenes[to];
- 				this.scenes[to] = sc;
- 				this.sortSceneIdx();
- 			}
- 		},
- 		//»ñÈ¡Ä³¸ö³¡¾°µÄË÷Òı
- 		getIdx: function(scene) {
- 			return scene.holder.css("z-index");
- 		},
- 		//°ÑÄ³¸ö³¡¾°ÒÆ¶¯µ½×î¶¥²¿
- 		bringToTop: function(scene) {
- 			var idx = this.getIdx(scene);
- 			if (idx != this.scenes.length - 1) {
- 				this.scenes.splice(idx, 1);
- 				this.scenes[this.scenes.length] = scene;
- 				this.sortSceneIdx();
- 			}
- 		},
- 		//°ÑÄ³¸ö³¡¾°ÒÆ¶¯µ½×îµ×²¿
- 		bringToLast: function(scene) {
- 			var idx = this.getIdx(scene);
- 			if (idx != 0) {
- 				this.scenes.splice(idx, 1);
- 				this.scenes.splice(0, 0, scene);
- 				this.sortSceneIdx();
- 			}
- 		},
- 		//³¡¾°ºóÒÆ
- 		back: function(scene) {
- 			var idx = this.getIdx(scene);
- 			if (idx > 0) {
- 				this.swap(idx, idx - 1);
- 			}
- 		},
- 		//³¡¾°Ç°ÒÆ
- 		forward: function(scene) {
- 			var idx = this.getIdx(scene);
- 			if (idx < this.scenes.length) {
- 				this.swap(idx, idx + 1);
- 			}
- 		},
- 		//¸ù¾İÃû³Æ»ñÈ¡³¡¾°
- 		getScene: function(name) {
- 			return this.namedScenes[name];
- 		},
- 		//»ñÈ¡µ±Ç°³¡¾°,¶¥²¿³¡¾°Îªµ±Ç°³¡¾°
- 		getCurrentScene: function() {
- 			return this.scenes[this.scenes.length - 1];
- 		},
- 		//Çå³ıËùÓĞ³¡¾°
- 		clearAll: function() {
- 			for (var i in this.scenes) {
- 				this.scenes[i].clean();
- 			}
- 			this.namedScenes = {};
- 			this.scenes = [];
- 		}
- 	});
+    //åœºæ™¯ç®¡ç†ç±»   
+    var _sceneman = win.SceneManager = Class.extend({
+        init: function(param) {
+            //ä»¥å‘½åæ–¹å¼ä¿å­˜,ä¾¿äºå¿«é€Ÿé€šè¿‡åç§°è·å–
+            this.namedScenes = {};
+            //ä»¥å †æ ˆæ–¹å¼ä¿å­˜æ‰€æœ‰åœºæ™¯ï¼Œæœ€åçš„å…ƒç´ ä¸ºæ ˆé¡¶
+            this.scenes = [];
+        },
+        //åˆ›å»ºæ–°çš„åœºæ™¯,é€šè¿‡ç±»åå’Œå‚æ•°åˆ›å»º,å› ä¸ºsceneå¯èƒ½æœ‰è‡ªå·±çš„å­ç±»,éœ€è¦æ³¨æ„çš„æ˜¯argæ˜¯å¿…é¡»è¦æ˜¯æ•°ç»„å½¢å¼
+        createScene: function(sceneClass, args) {
+            var sc = null;
+            if (arguments.length == 1) {
+                sc = ClassFactory.newInstance("Scene", arguments[0]);
+            } else {
+                sceneClass = sceneClass || "Scene";
+                sc = ClassFactory.newInstance(sceneClass, args);
+            }
+            this.push(sc);
+            return sc;
+        },
+        //åœºæ™¯é‡æ’åº
+        sortSceneIdx: function() {
+            for (var i = 0, len = this.scenes.length; i < len; i++) {
+                var sc = this.scenes[i];
+                sc.holder.css("z-index", i);
+            }
+        },
+        //å‹å…¥sceneåœºæ™¯
+        push: function(scene) {
+            if (!this.getScene(scene.name)) {
+                this.scenes.push(scene);
+                this.namedScenes[scene.name] = scene;
+                this.sortSceneIdx();
+            }
+        },
+        //ç§»é™¤é¡¶éƒ¨åœºæ™¯
+        pop: function() {
+            var sc = this.scenes.pop();
+            if (sc != null) {
+                sc.clean();
+                delete this.namedScenes[sc.name];
+                this.sortSceneIdx();
+            }
+        },
+        //åˆ é™¤åœºæ™¯
+        remove: function(name) {
+            var sc = this.getScene(name);
+            if (sc != null) {
+                sc.clean();
+                delete this.namedScenes[name];
+                ArrayUtil.removeFn(this.scenes, function(s) {
+                    return s.name === name;
+                })
+                this.sortSceneIdx();
+            }
+        },
+        //äº¤æ¢åœºæ™¯ä½ç½®
+        swap: function(from, to) {
+            if (from >= 0 && from <= this.scenes.length - 1 && to >= 0 && to <= this.scenes.length - 1) {
+                var sc = this.scenes[from];
+                this.scenes[from] = this.scenes[to];
+                this.scenes[to] = sc;
+                this.sortSceneIdx();
+            }
+        },
+        //è·å–æŸä¸ªåœºæ™¯çš„ç´¢å¼•
+        getIdx: function(scene) {
+            return scene.holder.css("z-index");
+        },
+        //æŠŠæŸä¸ªåœºæ™¯ç§»åŠ¨åˆ°æœ€é¡¶éƒ¨
+        bringToTop: function(scene) {
+            var idx = this.getIdx(scene);
+            if (idx != this.scenes.length - 1) {
+                this.scenes.splice(idx, 1);
+                this.scenes[this.scenes.length] = scene;
+                this.sortSceneIdx();
+            }
+        },
+        //æŠŠæŸä¸ªåœºæ™¯ç§»åŠ¨åˆ°æœ€åº•éƒ¨
+        bringToLast: function(scene) {
+            var idx = this.getIdx(scene);
+            if (idx != 0) {
+                this.scenes.splice(idx, 1);
+                this.scenes.splice(0, 0, scene);
+                this.sortSceneIdx();
+            }
+        },
+        //åœºæ™¯åç§»
+        back: function(scene) {
+            var idx = this.getIdx(scene);
+            if (idx > 0) {
+                this.swap(idx, idx - 1);
+            }
+        },
+        //åœºæ™¯å‰ç§»
+        forward: function(scene) {
+            var idx = this.getIdx(scene);
+            if (idx < this.scenes.length) {
+                this.swap(idx, idx + 1);
+            }
+        },
+        //æ ¹æ®åç§°è·å–åœºæ™¯
+        getScene: function(name) {
+            return this.namedScenes[name];
+        },
+        //è·å–å½“å‰åœºæ™¯,é¡¶éƒ¨åœºæ™¯ä¸ºå½“å‰åœºæ™¯
+        getCurrentScene: function() {
+            return this.scenes[this.scenes.length - 1];
+        },
+        //æ¸…é™¤æ‰€æœ‰åœºæ™¯
+        clearAll: function() {
+            for (var i in this.scenes) {
+                this.scenes[i].clean();
+            }
+            this.namedScenes = {};
+            this.scenes = [];
+        }
+    });
  }(window))

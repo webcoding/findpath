@@ -3,57 +3,57 @@
  * Copyright 2012 xiangfeng
  * Released under the MIT license
  * Please contact to xiangfenglf@163.com if you hava any question
- * Ö¡¶¯»­¶ÔÏó
+ * å¸§åŠ¨ç”»å¯¹è±¡
  */
 (function(win) {
-		//Ö¡¶¯»­¶ÔÏó
+		//å¸§åŠ¨ç”»å¯¹è±¡
 		var _frames = win.Frames = Class.extend({
 			init: function(name, img, duration) {
-				//Ö¡¶¯»­Ãû³Æ
+				//å¸§åŠ¨ç”»åç§°
 				this.name = name;
-				//Ö¡¶¯»­Ã¿Ö¡Ëù³ÖÐøµÄÊ±¼ä
-				this.duration = duration | 50; //Ä¬ÈÏÃ¿Ö¡³ÖÐø50ºÁÃë
-				//±£´æÃ¿Ö¡Î»ÖÃ£¬ºÍ³ÖÐøÊ±¼äÐÅÏ¢
+				//å¸§åŠ¨ç”»æ¯å¸§æ‰€æŒç»­çš„æ—¶é—´
+				this.duration = duration | 50; //é»˜è®¤æ¯å¸§æŒç»­50æ¯«ç§’
+				//ä¿å­˜æ¯å¸§ä½ç½®ï¼Œå’ŒæŒç»­æ—¶é—´ä¿¡æ¯
 				this.frames = [];
-				//¶ÔÓ¦µÄ¶¯»­Ö¡ÐòÁÐÍ¼,
+				//å¯¹åº”çš„åŠ¨ç”»å¸§åºåˆ—å›¾,
 				this.img = img;
 			},
-			//Ìí¼ÓÖ¡Êý¾Ý
+			//æ·»åŠ å¸§æ•°æ®
 			add: function(x, y, w, h, img, dur) {
 				var dur = dur || this.duration,
 					img = img || this.img;
 				this.frames.push([img, x, y, w, h, dur]);
 			},
-			//²åÈëÖ¡Êý¾Ý
+			//æ’å…¥å¸§æ•°æ®
 			insert: function(idx, x, y, w, h, img, dur) {
 				var dur = dur || this.duration,
 					img = img || this.img;
 				ArrayUtil.insert(this.frames, idx, [img, x, y, w, h, dur]);
 			},
-			//ÒÆ³öÖ¡Êý¾Ý
+			//ç§»å‡ºå¸§æ•°æ®
 			remove: function(idx) {
 				this.frames.removeIdx(idx);
 			},
-			//É¾³ýËùÓÐÖ¡
+			//åˆ é™¤æ‰€æœ‰å¸§
 			clear: function() {
 				this.frames = [];
 			},
-			//»ñÈ¡Ö¡Êý¾Ý
+			//èŽ·å–å¸§æ•°æ®
 			get: function(idx) {
 				return this.frames[idx];
 			},
-			//»ñÈ¡×ÜÊý
+			//èŽ·å–æ€»æ•°
 			getCount: function() {
 				return this.frames.length;
 			}
 		});
-		//Ö¡¶¯»­¼¯ºÏ¶ÔÏó,±£´æÒ»×éÖ¡¶¯»­¼¯ºÏ
+		//å¸§åŠ¨ç”»é›†åˆå¯¹è±¡,ä¿å­˜ä¸€ç»„å¸§åŠ¨ç”»é›†åˆ
 		var _animations = win.Animations = Class.extend({
 			init: function() {
-				//±£´æËùÓÐ¶¯»­Ö¡
+				//ä¿å­˜æ‰€æœ‰åŠ¨ç”»å¸§
 				this.anims = {};
 			},
-			//»ñÈ¡ËùÓÐÃû³Æ
+			//èŽ·å–æ‰€æœ‰åç§°
 			getAllNames: function() {
 				var ans = [];
 				for (var k in this.anims) {
@@ -63,31 +63,31 @@
 				}
 				return ans;
 			},
-			//Ìí¼ÓÖ¡¶¯»­¼¯ºÏ
+			//æ·»åŠ å¸§åŠ¨ç”»é›†åˆ
 			add: function(name, frames) {
 				this.anims[name] = frames;
 			},
-			//É¾³ýÖ¡¶¯»­¼¯ºÏ
+			//åˆ é™¤å¸§åŠ¨ç”»é›†åˆ
 			remove: function(name) {
 				this.anims[name] = null;
 			},
-			//Çå¿ÕÖ¡¶¯»­¼¯ºÏ
+			//æ¸…ç©ºå¸§åŠ¨ç”»é›†åˆ
 			clear: function() {
 				this.anims = {};
 			},
-			//»ñÈ¡µ±Ç°Ö¡¶¯»­
+			//èŽ·å–å½“å‰å¸§åŠ¨ç”»
 			get: function(name) {
 				return this.anims[name];
 			}
 		})
-		//Ö¡¶¯»­¿ØÖÆ¶ÔÏó 
+		//å¸§åŠ¨ç”»æŽ§åˆ¶å¯¹è±¡ 
 		var _frameCtrl = win.FrameCtrl = Class.extend({
 			init: function(processFrameFN) {
-				//È±Ê¡¶¯»­´¦Àíº¯Êý
+				//ç¼ºçœåŠ¨ç”»å¤„ç†å‡½æ•°
 				function defProcessFrame() {
-					//¼ÆËãÉÏÒ»Ö¡µ½ÏÖÔÚµÄÊ±¼ä
+					//è®¡ç®—ä¸Šä¸€å¸§åˆ°çŽ°åœ¨çš„æ—¶é—´
 					this.fDur += FrameState.elapseTime * this.speed;
-					//Èç¹û³¬¹ýµ±Ç°Ö¡µÄ³ÖÐøÊ±¼ä¾ÍÇÐ»»µ½ÏÂÒ»Ö¡
+					//å¦‚æžœè¶…è¿‡å½“å‰å¸§çš„æŒç»­æ—¶é—´å°±åˆ‡æ¢åˆ°ä¸‹ä¸€å¸§
 					if (this.fDur >= this.currFrames.frames[this.currFIdx][5]) {
 						this.fDur = 0;
 						if (this.currFIdx < this.feIdx - 1) {
@@ -99,25 +99,25 @@
 						}
 					}
 				}
-				//ÉèÖÃ¶¯»­´¦Àíº¯Êý
+				//è®¾ç½®åŠ¨ç”»å¤„ç†å‡½æ•°
 				this.processFrame = processFrameFN || defProcessFrame;
 			},
-			//¸´Î»ËùÓÐÊôÐÔ
+			//å¤ä½æ‰€æœ‰å±žæ€§
 			reset: function() {
-				//¿ªÊ¼Ö¡Ë÷Òý
+				//å¼€å§‹å¸§ç´¢å¼•
 				this.fsIdx = 0;
-				//½áÊøÖ¡Ë÷Òý
+				//ç»“æŸå¸§ç´¢å¼•
 				this.feIdx = this.currFrames.getCount();
-				//µ±Ç°ÔËÐÐÖ¡Ë÷Òý
+				//å½“å‰è¿è¡Œå¸§ç´¢å¼•
 				this.currFIdx = 0;
-				//ÊÇ·ñÑ­»·
+				//æ˜¯å¦å¾ªçŽ¯
 				this.isCycle = true;
-				//µ±Ç°Ö¡ÒÑ¾­³ÖÐøµÄÊ±¼ä
+				//å½“å‰å¸§å·²ç»æŒç»­çš„æ—¶é—´
 				this.fDur = 0;
-				//¶¯»­ËÙ¶È
+				//åŠ¨ç”»é€Ÿåº¦
 				this.speed = 1;
 			},
-			//ÉèÖÃµ±Ç°Ö¡¶¯»­
+			//è®¾ç½®å½“å‰å¸§åŠ¨ç”»
 			setCurrent: function(name) {
 				var cFrames = this.anims.get(name);
 				if (this.currFrames != cFrames) {
@@ -127,43 +127,43 @@
 					this.speed = oSpeed;
 				}
 			},
-			//»ñÈ¡µ±Ç°Ö¡¶¯»­
+			//èŽ·å–å½“å‰å¸§åŠ¨ç”»
 			getCurrent: function() {
 				return this.currFrames;
 			},
-			//ÉèÖÃframes
+			//è®¾ç½®frames
 			setAnims: function(animations, currAnimName) {
 				this.anims = animations;
 				currAnimName = currAnimName || "def";
-				//ÉèÖÃµ±Ç°¶¯»­Ö¡¼¯
+				//è®¾ç½®å½“å‰åŠ¨ç”»å¸§é›†
 				this.setCurrent(currAnimName);
 			},
 			getCurrFrameIdx: function() {
 				return this.currFIdx;
 			},
-			//»ñÈ¡µ±Ç°Ö¡
+			//èŽ·å–å½“å‰å¸§
 			getCurrFrame: function() {
 				return this.currFrames.get(this.currFIdx);
 			},
-			//»ñÈ¡ÏÂÒ»Ö¡
+			//èŽ·å–ä¸‹ä¸€å¸§
 			getNextFrame: function() {
 				this.processFrame();
 				return this.currFrames.get(this.currFIdx);
 			},
-			//ÊÇ·ñµ½ÁË×îºóÒ»Ö¡ 
+			//æ˜¯å¦åˆ°äº†æœ€åŽä¸€å¸§ 
 			isLastFrame: function() {
 				return this.currFIdx == this.currFrames.frames.length - 1;
 			},
-			//ÊÇ·ñµ½ÁËµÚÒ»Ö¡ 
+			//æ˜¯å¦åˆ°äº†ç¬¬ä¸€å¸§ 
 			isFirstFrame: function() {
 				return this.currFIdx == 0;
 			}
 		})
-		//ÀàÃû³Æ
+		//ç±»åç§°
 		_frames.ClassName = "Frames";
 		_frameCtrl.ClassName = "FrameCtrl";
 		_animations.ClassName = "Animations"
-		//×¢²áÀàµ½Àà¹¤³§ÖÐ
+		//æ³¨å†Œç±»åˆ°ç±»å·¥åŽ‚ä¸­
 		ClassFactory.regClass(_frames.ClassName, _frames);
 		ClassFactory.regClass(_frameCtrl.ClassName, _frameCtrl);
 		ClassFactory.regClass(_animations.ClassName, _animations);

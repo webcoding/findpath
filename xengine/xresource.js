@@ -3,229 +3,229 @@
   * Copyright 2012 xiangfeng
   * Released under the MIT license
   * Please contact to xiangfenglf@163.com if you hava any question
-  * ÓÎÏ·×ÊÔ´Àà
+  * æ¸¸æˆèµ„æºç±»
   */
  (function(win) {
- 	//ÓÎÏ·×ÊÔ´¹ÜÀíÀà
- 	var _resMan = win.ResManager = {
- 		//´æ´¢ËùÓĞ¶¨ÒåµÄ×ÊÔ´ÀàĞÍ
- 		defTypes: {},
- 		//´æ´¢ËùÓĞ×ÊÔ´
- 		res: {},
- 		//×¢²á×ÊÔ´ÀàĞÍ
- 		regResType: function(type, clz) {
- 			if (this.defTypes[type] == null) {
- 				this.defTypes[type] = {
- 					"type": type,
- 					"class": clz
- 				};
- 			}
- 		},
- 		//¸ù¾İÀàĞÍ»ñÈ¡×ÊÔ´Àà 
- 		getClass: function(type) {
- 			return this.defTypes[type]["class"];
- 		},
- 		//¼ÓÔØ×ÊÔ´ 
- 		load: function(type, name, src, loadedFN) {
- 			var res = this.getClass(type).load(name, src, loadedFN);
- 			this.addRes(res);
- 			return res;
- 		},
- 		//Ìí¼Ó×ÊÔ´
- 		addRes: function(resObj) {
- 			this.res[resObj.type] = this.res[resObj.type] || {};
- 			this.res[resObj.type][resObj.name] = resObj;
- 		},
- 		//É¾³ıÖ¸¶¨×ÊÔ´
- 		removeRes: function(resObj) {
- 			var t = resObj.type,
- 				n = resObj.name;
- 			delete this.res[t][n];
- 			if (JSONUtil.isEmpty(this.res[t])) {
- 				delete this.res[t];
- 			}
- 		},
- 		//Çå³ıËùÓĞ×ÊÔ´
- 		clearRes: function() {
- 			this.res = {};
- 		},
- 		//¸ù¾İÃû³Æ»ñÈ¡×ÊÔ´
- 		getResByName: function(type, name) {
- 			return this.res[type][name];
- 		},
- 		//»ñÈ¡Ö¡¶¯»­×ÊÔ´
- 		getAnimationsByName: function(fResName, fName) {
- 			var obj = this.res[_frameRes.ClassName][fResName];
- 			var fm = obj.frames[fName];
- 			return fm;
- 		},
- 		//¼ÓÔØ×ÊÔ´,urlÖ¸¶¨×ÊÔ´ÅäÖÃÎÄ¼ş
- 		loadRes: function(url, loadedFN, perLoadedFN) {
- 			var self = this;
- 			ResUtil.loadFile(url, null,
- 				function(data) {
- 					self.parseRes(data, loadedFN, perLoadedFN);
- 				})
- 		},
- 		//½âÎö×ÊÔ´
- 		parseRes: function(res, loadedFN, perLoadedFN) {
- 			var resCount = 0;
- 			var totalCount = 0;
- 			var resType = [];
- 			this.res = [];
- 			for (i in res) {
- 				if (res.hasOwnProperty(i)) {
- 					resType.push(i);
- 					totalCount += res[i].length;
- 				}
- 			}
- 			var cResTIdx = 0;
- 			var cRes = resType[cResTIdx];
- 			var cResCount = 0;
- 			var loadObj = null;
- 			var self = this;
- 			var loadHand = window.setInterval(function() {
- 				if (loadObj == null) {
- 					loadObj = self.load(cRes, res[cRes][cResCount].name, res[cRes][cResCount].src);
- 				} else {
- 					if (loadObj.isLoaded) {
- 						resCount++;
- 						cResCount++;
- 						perLoadedFN && perLoadedFN(totalCount, resCount);
- 						if (resCount == totalCount) {
- 							window.clearInterval(loadHand);
- 							loadedFN && loadedFN(loadedFN);
- 							return;
- 						}
- 						if (cResCount >= res[cRes].length) {
- 							cResTIdx++;
- 							cRes = resType[cResTIdx];
- 							cResCount = 0;
- 						}
- 						loadObj = self.load(cRes, res[cRes][cResCount].name, res[cRes][cResCount].src);
- 					}
- 				}
- 			});
- 		}
- 	}
- 	//Í¼Æ¬×ÊÔ´
- 	var _imgRes = win.ImageRes = {
- 		//¼ÓÔØ×ÊÔ´
- 		load: function(name, url, loadedFN) {
- 			var img = new Image();
- 			img.src = url;
- 			var obj = {
- 				"type": "image",
- 				"name": name,
- 				"hEle": img,
- 				"src": url,
- 				"isLoaded": false
- 			};
- 			img.onload = function() {
- 				obj.isLoaded = true;
- 				loadedFN && loadedFN();
- 			}
- 			return obj;
- 		}
- 	};
- 	//Ö¡¶¯»­×ÊÔ´
- 	var _frameRes = win.FrameRes = {
- 		load: function(name, url, loadedFN) {
- 			//½âÎöframeJSON¸ñÊ½ÅäÖÃÎÄ¼ş
- 			function parse(animations, data) {
- 				switch (data.type) {
- 					case 0:
- 						var res = _resMan.getResByName(_imgRes.ClassName, data.img);
- 						var fs = new Frames("def", res.hEle);
- 						fs.add(0, 0, res.hEle.width, res.hEle.height);
- 						animations.add("def", fs);
- 						break;
- 					case 1:
- 						var res = _resMan.getResByName(_imgRes.ClassName, data.img);
- 						if (res === null) {
- 							console.log("Load image for frames:" + data.img + " error !")
- 							return;
- 						}
- 						var r = data.rc[0];
- 						var c = data.rc[1];
- 						var w = data.rc[2];
- 						var h = data.rc[3];
- 						var fs = data.animations;
- 						//Èç¹ûºöÂÔÔòÈ¡È«²¿
- 						if (fs == null) {
- 							var fs = new Frames("def", res.hEle);
- 							for (var i = 0; i < r; i++) {
- 								for (var j = 0; j < c; j++) {
- 									fs.add(j * w, i * h, w, h);
- 								}
- 							}
- 							animations.add("def", fs);
- 						} else {
- 							for (var fname in fs) {
- 								if (fs.hasOwnProperty(fname)) {
- 									var fss = fs[fname];
- 									var fm = new Frames(fname, res.hEle);
- 									for (var j = fss[0]; j <= fss[fss.length - 1]; j++) {
- 										var fx = j % c;
- 										fx |= fx;
- 										var fy = j / c;
- 										fy |= fy;
- 										fm.add(w * fx, h * fy, w, h);
- 									}
- 									animations.add(fname, fm);
- 								}
- 							}
- 						}
- 						break;
- 				}
- 			}
- 			var obj = {
- 				"type": "frame",
- 				"name": name,
- 				"src": url,
- 				"frames": {},
- 				"isLoaded": false
- 			};
- 			//¼ÓÔØÖ¡¶¯»­×ÊÔ´
- 			ResUtil.loadFile(url, null, function(data) {
- 				obj.isLoaded = true;
- 				for (var i in data) {
- 					if (data.hasOwnProperty(i)) {
- 						var f = data[i];
- 						obj.frames[i] = new Animations();
- 						//½âÎöÖ¡¶¯»­×ÊÔ´
- 						parse(obj.frames[i], f);
- 					}
- 				}
- 				loadedFN && loadedFN();
- 			});
- 			return obj;
- 		}
- 	}
- 	//ÓÎÏ·ÅäÖÃ×ÊÔ´
- 	var _gCfgRes = win.GCfgRes = {
- 		//¼ÓÔØ×ÊÔ´
- 		load: function(name, url, loadedFN) {
- 			var obj = {
- 				"type": "gCfg",
- 				"name": name,
- 				"src": url,
- 				"data": null,
- 				"isLoaded": false
- 			};
- 			ResUtil.loadFile(url, null, function(data) {
- 				obj.isLoaded = true;
- 				obj.data = data;
- 				loadedFN && loadedFN();
- 			});
- 			return obj;
- 		}
- 	};
- 	_imgRes.ClassName = "image";
- 	_frameRes.ClassName = "frame";
- 	_gCfgRes.ClassName = "gCfg";
- 	//×¢²á×ÊÔ´Ààµ½×ÊÔ´¹ÜÀíÆ÷ÖĞ
- 	_resMan.regResType(_imgRes.ClassName, _imgRes);
- 	_resMan.regResType(_frameRes.ClassName, _frameRes);
- 	_resMan.regResType(_gCfgRes.ClassName, _gCfgRes);
+    //æ¸¸æˆèµ„æºç®¡ç†ç±»
+    var _resMan = win.ResManager = {
+        //å­˜å‚¨æ‰€æœ‰å®šä¹‰çš„èµ„æºç±»å‹
+        defTypes: {},
+        //å­˜å‚¨æ‰€æœ‰èµ„æº
+        res: {},
+        //æ³¨å†Œèµ„æºç±»å‹
+        regResType: function(type, clz) {
+            if (this.defTypes[type] == null) {
+                this.defTypes[type] = {
+                    "type": type,
+                    "class": clz
+                };
+            }
+        },
+        //æ ¹æ®ç±»å‹è·å–èµ„æºç±» 
+        getClass: function(type) {
+            return this.defTypes[type]["class"];
+        },
+        //åŠ è½½èµ„æº 
+        load: function(type, name, src, loadedFN) {
+            var res = this.getClass(type).load(name, src, loadedFN);
+            this.addRes(res);
+            return res;
+        },
+        //æ·»åŠ èµ„æº
+        addRes: function(resObj) {
+            this.res[resObj.type] = this.res[resObj.type] || {};
+            this.res[resObj.type][resObj.name] = resObj;
+        },
+        //åˆ é™¤æŒ‡å®šèµ„æº
+        removeRes: function(resObj) {
+            var t = resObj.type,
+                n = resObj.name;
+            delete this.res[t][n];
+            if (JSONUtil.isEmpty(this.res[t])) {
+                delete this.res[t];
+            }
+        },
+        //æ¸…é™¤æ‰€æœ‰èµ„æº
+        clearRes: function() {
+            this.res = {};
+        },
+        //æ ¹æ®åç§°è·å–èµ„æº
+        getResByName: function(type, name) {
+            return this.res[type][name];
+        },
+        //è·å–å¸§åŠ¨ç”»èµ„æº
+        getAnimationsByName: function(fResName, fName) {
+            var obj = this.res[_frameRes.ClassName][fResName];
+            var fm = obj.frames[fName];
+            return fm;
+        },
+        //åŠ è½½èµ„æº,urlæŒ‡å®šèµ„æºé…ç½®æ–‡ä»¶
+        loadRes: function(url, loadedFN, perLoadedFN) {
+            var self = this;
+            ResUtil.loadFile(url, null,
+                function(data) {
+                    self.parseRes(data, loadedFN, perLoadedFN);
+                })
+        },
+        //è§£æèµ„æº
+        parseRes: function(res, loadedFN, perLoadedFN) {
+            var resCount = 0;
+            var totalCount = 0;
+            var resType = [];
+            this.res = [];
+            for (i in res) {
+                if (res.hasOwnProperty(i)) {
+                    resType.push(i);
+                    totalCount += res[i].length;
+                }
+            }
+            var cResTIdx = 0;
+            var cRes = resType[cResTIdx];
+            var cResCount = 0;
+            var loadObj = null;
+            var self = this;
+            var loadHand = window.setInterval(function() {
+                if (loadObj == null) {
+                    loadObj = self.load(cRes, res[cRes][cResCount].name, res[cRes][cResCount].src);
+                } else {
+                    if (loadObj.isLoaded) {
+                        resCount++;
+                        cResCount++;
+                        perLoadedFN && perLoadedFN(totalCount, resCount);
+                        if (resCount == totalCount) {
+                            window.clearInterval(loadHand);
+                            loadedFN && loadedFN(loadedFN);
+                            return;
+                        }
+                        if (cResCount >= res[cRes].length) {
+                            cResTIdx++;
+                            cRes = resType[cResTIdx];
+                            cResCount = 0;
+                        }
+                        loadObj = self.load(cRes, res[cRes][cResCount].name, res[cRes][cResCount].src);
+                    }
+                }
+            });
+        }
+    }
+    //å›¾ç‰‡èµ„æº
+    var _imgRes = win.ImageRes = {
+        //åŠ è½½èµ„æº
+        load: function(name, url, loadedFN) {
+            var img = new Image();
+            img.src = url;
+            var obj = {
+                "type": "image",
+                "name": name,
+                "hEle": img,
+                "src": url,
+                "isLoaded": false
+            };
+            img.onload = function() {
+                obj.isLoaded = true;
+                loadedFN && loadedFN();
+            }
+            return obj;
+        }
+    };
+    //å¸§åŠ¨ç”»èµ„æº
+    var _frameRes = win.FrameRes = {
+        load: function(name, url, loadedFN) {
+            //è§£æframeJSONæ ¼å¼é…ç½®æ–‡ä»¶
+            function parse(animations, data) {
+                switch (data.type) {
+                    case 0:
+                        var res = _resMan.getResByName(_imgRes.ClassName, data.img);
+                        var fs = new Frames("def", res.hEle);
+                        fs.add(0, 0, res.hEle.width, res.hEle.height);
+                        animations.add("def", fs);
+                        break;
+                    case 1:
+                        var res = _resMan.getResByName(_imgRes.ClassName, data.img);
+                        if (res === null) {
+                            console.log("Load image for frames:" + data.img + " error !")
+                            return;
+                        }
+                        var r = data.rc[0];
+                        var c = data.rc[1];
+                        var w = data.rc[2];
+                        var h = data.rc[3];
+                        var fs = data.animations;
+                        //å¦‚æœå¿½ç•¥åˆ™å–å…¨éƒ¨
+                        if (fs == null) {
+                            var fs = new Frames("def", res.hEle);
+                            for (var i = 0; i < r; i++) {
+                                for (var j = 0; j < c; j++) {
+                                    fs.add(j * w, i * h, w, h);
+                                }
+                            }
+                            animations.add("def", fs);
+                        } else {
+                            for (var fname in fs) {
+                                if (fs.hasOwnProperty(fname)) {
+                                    var fss = fs[fname];
+                                    var fm = new Frames(fname, res.hEle);
+                                    for (var j = fss[0]; j <= fss[fss.length - 1]; j++) {
+                                        var fx = j % c;
+                                        fx |= fx;
+                                        var fy = j / c;
+                                        fy |= fy;
+                                        fm.add(w * fx, h * fy, w, h);
+                                    }
+                                    animations.add(fname, fm);
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+            var obj = {
+                "type": "frame",
+                "name": name,
+                "src": url,
+                "frames": {},
+                "isLoaded": false
+            };
+            //åŠ è½½å¸§åŠ¨ç”»èµ„æº
+            ResUtil.loadFile(url, null, function(data) {
+                obj.isLoaded = true;
+                for (var i in data) {
+                    if (data.hasOwnProperty(i)) {
+                        var f = data[i];
+                        obj.frames[i] = new Animations();
+                        //è§£æå¸§åŠ¨ç”»èµ„æº
+                        parse(obj.frames[i], f);
+                    }
+                }
+                loadedFN && loadedFN();
+            });
+            return obj;
+        }
+    }
+    //æ¸¸æˆé…ç½®èµ„æº
+    var _gCfgRes = win.GCfgRes = {
+        //åŠ è½½èµ„æº
+        load: function(name, url, loadedFN) {
+            var obj = {
+                "type": "gCfg",
+                "name": name,
+                "src": url,
+                "data": null,
+                "isLoaded": false
+            };
+            ResUtil.loadFile(url, null, function(data) {
+                obj.isLoaded = true;
+                obj.data = data;
+                loadedFN && loadedFN();
+            });
+            return obj;
+        }
+    };
+    _imgRes.ClassName = "image";
+    _frameRes.ClassName = "frame";
+    _gCfgRes.ClassName = "gCfg";
+    //æ³¨å†Œèµ„æºç±»åˆ°èµ„æºç®¡ç†å™¨ä¸­
+    _resMan.regResType(_imgRes.ClassName, _imgRes);
+    _resMan.regResType(_frameRes.ClassName, _frameRes);
+    _resMan.regResType(_gCfgRes.ClassName, _gCfgRes);
  }(window))

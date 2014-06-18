@@ -3,15 +3,15 @@
  * Copyright 2012 xiangfeng
  * Released under the MIT license
  * Please contact to xiangfenglf@163.com if you hava any question
- * xengine ¹¤¾ßÀà
+ * xengine å·¥å…·ç±»
  */
 (function(win) {
-	//ä¯ÀÀÆ÷¹¤¾ßÀà
+	//æµè§ˆå™¨å·¥å…·ç±»
 	var _bUtil = win.BrowseUtil = {
-		//»ñÈ¡ä¯ÀÀÆ÷ÊÊºÏµÄcssÇ°×º
+		//è·å–æµè§ˆå™¨é€‚åˆçš„csså‰ç¼€
 		getPrefix4CSS: function() {}
 	};
-	//JSON¹¤¾ßÀà
+	//JSONå·¥å…·ç±»
 	var _jUtil = win.JSONUtil = {
 		isEmpty: function(obj) {
 			for (var i in obj) {
@@ -20,7 +20,7 @@
 			return true;
 		}
 	}
-	//×ÊÔ´¹¤¾ßÀà
+	//èµ„æºå·¥å…·ç±»
 	var _rUtil = win.ResUtil = {
 		loadFile: function(fileURL, type, fn, sync) {
 			var ct = "text/xml;charset=UTF-8";
@@ -44,7 +44,7 @@
 			});
 		}
 	}
-	//¶ÓÁĞÀà
+	//é˜Ÿåˆ—ç±»
 	var _queue = win.Queue = function(cap) {
 		var _MAXDEF = 9,
 			capacity = cap + 1,
@@ -76,9 +76,9 @@
 			return result;
 		};
 	}
-	//Êı×é¹¤¾ßÀà
+	//æ•°ç»„å·¥å…·ç±»
 	var _arrUtil = win.ArrayUtil = {
-		//ÒÆ³öarrÖĞË÷ÒıÎªidxµÄÏîÄ¿
+		//ç§»å‡ºarrä¸­ç´¢å¼•ä¸ºidxçš„é¡¹ç›®
 		removeByIdx: function(arr, idx) {
 			arr && arr.splice(idx, 1);
 		},
@@ -109,7 +109,7 @@
 			}
 		}
 	}
-	//ÊıÑ§¹¤¾ßÀà
+	//æ•°å­¦å·¥å…·ç±»
 	var MathUtil = win.MathUtil = {
 		deg2rad: function(angle) {
 			return angle * 0.017453292;
@@ -148,25 +148,25 @@
 				"y": v.y * rlen
 			};
 		},
-		//ÅĞ¶ÏÁ½¸ö¾ØĞÎÊÇ·ñÏà½»
+		//åˆ¤æ–­ä¸¤ä¸ªçŸ©å½¢æ˜¯å¦ç›¸äº¤
 		isInRect: function(x1, y1, x2, y2, x3, y3, x4, y4) {
 			if (x1 > x4 || x2 < x3) return false;
 			if (y1 > y4 || y2 < y3) return false;
 			return true;
 		},
-		//»ñÈ¡Á½¸ö¾ØĞÎÏà½»ÇøÓò
+		//è·å–ä¸¤ä¸ªçŸ©å½¢ç›¸äº¤åŒºåŸŸ
 		getInRect: function(x1, y1, x2, y2, x3, y3, x4, y4) {
 			return [Math.max(x1, x3), Math.max(y1, y3), Math.min(x2, x4), Math.min(y2, y4)];
 		},
-		//µãÊÇ·ñÔÚRectÖĞ
+		//ç‚¹æ˜¯å¦åœ¨Rectä¸­
 		pInRect: function(x1, y1, x2, y2, w, h) {
 			return x1 >= x2 && x1 <= x2 + w && y1 >= y2 && y1 <= y2 + h;
 		},
-		//ÒÔÆÁÄ»ÉÏ×óÉÏ½ÇÎªÔ­µã£¬x1,y1Îª×ø±êµÄµã×ªÏòÒÔox,oyÎªÔ­µãµÄ×ø±ê
+		//ä»¥å±å¹•ä¸Šå·¦ä¸Šè§’ä¸ºåŸç‚¹ï¼Œx1,y1ä¸ºåæ ‡çš„ç‚¹è½¬å‘ä»¥ox,oyä¸ºåŸç‚¹çš„åæ ‡
 		mapSToCoord: function(x1, y1, ox, oy) {
 			return [x1 - ox, y1 - oy];
 		},
-		//¼ÆËãpolyArrÔÚaxisÉÏµÄÍ¶Ó°,polyArrÊÇÒ»ÏµÁĞµã×ø±êµÄ¼¯ºÏ,Êı×é±íÊ¾
+		//è®¡ç®—polyArråœ¨axisä¸Šçš„æŠ•å½±,polyArræ˜¯ä¸€ç³»åˆ—ç‚¹åæ ‡çš„é›†åˆ,æ•°ç»„è¡¨ç¤º
 		calcProj: function(axis, polyArr) {
 			var v = {
 				"x": polyArr[0],
@@ -183,7 +183,7 @@
 			}
 			return [min, max];
 		},
-		//¼ÆËãÍ¬Ò»¸öÖáÉÏÏß¶ÎµÄ¾àÀës1(min1,max1),s2(min2,max2),Èç¹û¾àÀëĞ¡ÓÚ0Ôò±íÊ¾Á½Ïß¶ÎÓĞÏà½»; 
+		//è®¡ç®—åŒä¸€ä¸ªè½´ä¸Šçº¿æ®µçš„è·ç¦»s1(min1,max1),s2(min2,max2),å¦‚æœè·ç¦»å°äº0åˆ™è¡¨ç¤ºä¸¤çº¿æ®µæœ‰ç›¸äº¤; 
 		segDist: function(min1, max1, min2, max2) {
 			if (min1 < min2) {
 				return min2 - max1;
@@ -191,9 +191,9 @@
 				return min1 - max2;
 			}
 		},
-		//ÅĞ¶ÏÁ½¸ö¶à±ßĞÎÊÇ·ñÏà½»Åö×²,p1,p2ÓÃÓÚ±£´æ¶à±ßĞÎµãµÄÊı×é
+		//åˆ¤æ–­ä¸¤ä¸ªå¤šè¾¹å½¢æ˜¯å¦ç›¸äº¤ç¢°æ’,p1,p2ç”¨äºä¿å­˜å¤šè¾¹å½¢ç‚¹çš„æ•°ç»„
 		isCollide: function(p1, p2) {
-			//¶¨Òå·¨ÏòÁ¿
+			//å®šä¹‰æ³•å‘é‡
 			var e = {
 				"x": 0,
 				"y": 0
@@ -204,7 +204,7 @@
 				len2 = p2.length;
 			for (var i = 0, len = len1 + len2; i < len - 1; i += 2) {
 				idx = i;
-				//¼ÆËãÁ½¸ö¶à±ßĞÎÃ¿Ìõ±ß
+				//è®¡ç®—ä¸¤ä¸ªå¤šè¾¹å½¢æ¯æ¡è¾¹
 				if (i > len1) {
 					p = p2;
 					idx = (i - len1);
@@ -216,13 +216,13 @@
 					px = p[idx + 2] - p[idx],
 					py = p[idx + 3] - p[idx + 1];
 				}
-				//µÃµ½±ßµÄ·¨ÏòÁ¿ 
+				//å¾—åˆ°è¾¹çš„æ³•å‘é‡ 
 				e.x = -py;
 				e.y = px;
-				//¼ÆËãÁ½¸ö¶à±ßĞÎÔÚ·¨ÏòÁ¿ÉÏµÄÍ¶Ó°
+				//è®¡ç®—ä¸¤ä¸ªå¤šè¾¹å½¢åœ¨æ³•å‘é‡ä¸Šçš„æŠ•å½±
 				var pp1 = MathUtil.calcProj(e, p1);
 				var pp2 = MathUtil.calcProj(e, p2);
-				//¼ÆËãÁ½¸öÏß¶ÎÔÚ·¨ÏòÁ¿ÉÏ¾àÀë£¬Èç¹û´óÓÚ0Ôò¿ÉÒÔÍË³ö£¬±íÊ¾ÎŞÏà½»
+				//è®¡ç®—ä¸¤ä¸ªçº¿æ®µåœ¨æ³•å‘é‡ä¸Šè·ç¦»ï¼Œå¦‚æœå¤§äº0åˆ™å¯ä»¥é€€å‡ºï¼Œè¡¨ç¤ºæ— ç›¸äº¤
 				if (MathUtil.segDist(pp1[0], pp1[1], pp2[0], pp2[1]) > 0) {
 					return false;
 				}
@@ -230,9 +230,9 @@
 			return true;
 		}
 	}
-	//µØÍ¼¹¤¾ß
+	//åœ°å›¾å·¥å…·
 	var _MapUtil = win.MapUtil = {
-		//¶¨Òåµã¶ÔÏó
+		//å®šä¹‰ç‚¹å¯¹è±¡
 		Point: function(x, y) {
 			this.x = x;
 			this.y = y;
@@ -240,33 +240,33 @@
 			this.f = 0;
 			this.g = 0;
 			this.h = 0;
-			//µ±Ç°µã×´Ì¬£¬0£º±íÊ¾ÔÚopenlist 1:±íÊ¾closelist,-1±íÊ¾»¹Ã»´¦Àí
+			//å½“å‰ç‚¹çŠ¶æ€ï¼Œ0ï¼šè¡¨ç¤ºåœ¨openlist 1:è¡¨ç¤ºcloselist,-1è¡¨ç¤ºè¿˜æ²¡å¤„ç†
 			this.state = -1;
-			//flag±íÃ÷¸ÃµãÊÇ·ñ¿ÉÍ¨¹ı
+			//flagè¡¨æ˜è¯¥ç‚¹æ˜¯å¦å¯é€šè¿‡
 			this.flag = 0;
 		},
-		//²úÉúËæ»úÃÔ¹¬
+		//äº§ç”Ÿéšæœºè¿·å®«
 		primMaze: function(r, c) {
-			//³õÊ¼»¯Êı×é
+			//åˆå§‹åŒ–æ•°ç»„
 			function init(r, c) {
 				var a = new Array(2 * r + 1);
-				//È«²¿ÖÃ1
+				//å…¨éƒ¨ç½®1
 				for (var i = 0, len = a.length; i < len; i++) {
 					var cols = 2 * c + 1;
 					a[i] = new Array(cols);
 					ArrayUtil.fillWith(a[i], 1);
 				}
-				//ÖĞ¼ä¸ñ×ÓÎª0
+				//ä¸­é—´æ ¼å­ä¸º0
 				for (var i = 0; i < r; i++)
 					for (var j = 0; j < c; j++) {
 						a[2 * i + 1][2 * j + 1] = 0;
 					}
 				return a;
 			}
-			//´¦ÀíÊı×é£¬²úÉú×îÖÕµÄÊı×é
+			//å¤„ç†æ•°ç»„ï¼Œäº§ç”Ÿæœ€ç»ˆçš„æ•°ç»„
 
 			function process(arr) {
-				//acc´æ·ÅÒÑ·ÃÎÊ¶ÓÁĞ£¬noacc´æ·ÅÃ»ÓĞ·ÃÎÊ¶ÓÁĞ
+				//accå­˜æ”¾å·²è®¿é—®é˜Ÿåˆ—ï¼Œnoaccå­˜æ”¾æ²¡æœ‰è®¿é—®é˜Ÿåˆ—
 				var acc = [],
 					noacc = [];
 				var r = arr.length >> 1,
@@ -275,11 +275,11 @@
 				for (var i = 0; i < count; i++) {
 					noacc[i] = 0;
 				}
-				//¶¨Òå¿Õµ¥ÔªÉÏÏÂ×óÓÒÆ«ÒÆ
+				//å®šä¹‰ç©ºå•å…ƒä¸Šä¸‹å·¦å³åç§»
 				var offs = [-c, c, -1, 1],
 					offR = [-1, 1, 0, 0],
 					offC = [0, 0, -1, 1];
-				//Ëæ»ú´ÓnoaccÈ¡³öÒ»¸öÎ»ÖÃ
+				//éšæœºä»noaccå–å‡ºä¸€ä¸ªä½ç½®
 				var pos = MathUtil.randInt(count);
 				noacc[pos] = 1;
 				acc.push(pos);
@@ -287,12 +287,12 @@
 					var ls = -1,
 						offPos = -1;
 					offPos = -1;
-					//ÕÒ³öposÎ»ÖÃÔÚ¶şÎ¬Êı×éÖĞµÄ×ø±ê
+					//æ‰¾å‡ºposä½ç½®åœ¨äºŒç»´æ•°ç»„ä¸­çš„åæ ‡
 					var pr = pos / c | 0,
 						pc = pos % c,
 						co = 0,
 						o = 0;
-					//Ëæ»úÈ¡ÉÏÏÂ×óÓÒËÄ¸öµ¥Ôª
+					//éšæœºå–ä¸Šä¸‹å·¦å³å››ä¸ªå•å…ƒ
 					while (++co < 5) {
 						o = MathUtil.randInt(0, 5);
 						ls = offs[o] + pos;
@@ -309,7 +309,7 @@
 					} else {
 						pr = 2 * pr + 1;
 						pc = 2 * pc + 1;
-						//ÏàÁÚ¿Õµ¥ÔªÖĞ¼äµÄÎ»ÖÃÖÃ0
+						//ç›¸é‚»ç©ºå•å…ƒä¸­é—´çš„ä½ç½®ç½®0
 						arr[pr + offR[offPos]][pc + offC[offPos]] = 0;
 						pos = ls;
 						noacc[pos] = 1;
@@ -321,7 +321,7 @@
 			process(a);
 			return a;
 		},
-		//°ÑÆÕÍ¨¶şÎ¬Êı×é(È«²¿ÓÉ1£¬0±íÊ¾)µÄ×ª»»³Éa*ËùĞèÒªµÄµãÊı×é
+		//æŠŠæ™®é€šäºŒç»´æ•°ç»„(å…¨éƒ¨ç”±1ï¼Œ0è¡¨ç¤º)çš„è½¬æ¢æˆa*æ‰€éœ€è¦çš„ç‚¹æ•°ç»„
 		convertArrToAS: function(arr) {
 			var r = arr.length,
 				c = arr[0].length;
@@ -336,9 +336,9 @@
 			}
 			return a;
 		},
-		//A*Ëã·¨,pathArr±íÊ¾×îºó·µ»ØµÄÂ·¾¶
+		//A*ç®—æ³•,pathArrè¡¨ç¤ºæœ€åè¿”å›çš„è·¯å¾„
 		findPathA: function(pathArr, start, end, row, col) {
-			//Ìí¼ÓÊı¾İµ½ÅÅĞòÊı×éÖĞ
+			//æ·»åŠ æ•°æ®åˆ°æ’åºæ•°ç»„ä¸­
 			function addArrSort(descSortedArr, element, compare) {
 				var left = 0;
 				var right = descSortedArr.length - 1;
@@ -360,12 +360,12 @@
 				descSortedArr[left] = element;
 				return idx;
 			}
-			//ÅĞ¶ÏÁ½¸öµãÊÇ·ñÏàÍ¬
+			//åˆ¤æ–­ä¸¤ä¸ªç‚¹æ˜¯å¦ç›¸åŒ
 
 			function pEqual(p1, p2) {
 				return p1.x == p2.x && p1.y == p2.y;
 			}
-			//»ñÈ¡Á½¸öµã¾àÀë£¬²ÉÓÃÂü¹ş¶Ù·½·¨
+			//è·å–ä¸¤ä¸ªç‚¹è·ç¦»ï¼Œé‡‡ç”¨æ›¼å“ˆé¡¿æ–¹æ³•
 
 			function posDist(pos, pos1) {
 				return (Math.abs(pos1.x - pos.x) + Math.abs(pos1.y - pos.y));
@@ -374,12 +374,12 @@
 			function between(val, min, max) {
 				return (val >= min && val <= max)
 			}
-			//±È½ÏÁ½¸öµãfÖµ´óĞ¡
+			//æ¯”è¾ƒä¸¤ä¸ªç‚¹få€¼å¤§å°
 
 			function compPointF(pt1, pt2) {
 				return pt1.f - pt2.f;
 			}
-			//´¦Àíµ±Ç°½Úµã
+			//å¤„ç†å½“å‰èŠ‚ç‚¹
 
 			function processCurrpoint(arr, openList, row, col, currPoint, destPoint) {
 				//get up,down,left,right direct
@@ -417,13 +417,13 @@
 					}
 				return false;
 			}
-			//¶¨ÒåopenList
+			//å®šä¹‰openList
 			var openList = [];
-			//¶¨ÒåcloseList
+			//å®šä¹‰closeList
 			var closeList = [];
 			start = pathArr[start[0]][start[1]];
 			end = pathArr[end[0]][end[1]];
-			//Ìí¼Ó¿ªÊ¼½Úµãµ½openList;
+			//æ·»åŠ å¼€å§‹èŠ‚ç‚¹åˆ°openList;
 			addArrSort(openList, start, compPointF);
 			var finded = false;
 			var tcount = 0;
@@ -450,9 +450,9 @@
 			}
 		}
 	}
-	//ÑÕÉ«¹¤¾ß
+	//é¢œè‰²å·¥å…·
 	var ColorUtil = win.ColorUtil = {
-		//²úÉúÑÕÉ«´úÂë,r,g,bÖµÎª0~255
+		//äº§ç”Ÿé¢œè‰²ä»£ç ,r,g,bå€¼ä¸º0~255
 		rgb: function(r, g, b) {
 			var c = "#" + Number((r << 16) + (g << 8) + b).toString(16);
 			return c;

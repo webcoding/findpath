@@ -3,82 +3,82 @@
   * Copyright 2012 xiangfeng
   * Released under the MIT license
   * Please contact to xiangfenglf@163.com if you hava any question
-  * ÓÎÏ·äÖÈ¾¶ÔÏóÀà
+  * æ¸¸æˆæ¸²æŸ“å¯¹è±¡ç±»
   */
  (function(win) {
- 	//äÖÈ¾¶ÔÏóÀà   
- 	var _renderObj = win.RenderObj = Class.extend({
- 		init: function(name) {
- 			this.name = name || ("Unnamed_" + (_renderObj.SID++));
- 			//ÓµÓÐÕß,Ö¸Ïò³¡¾°¶ÔÏó
- 			this.owner = null;
- 			//x,y·½Ïò×ø±ê
- 			this.x = 0;
- 			this.y = 0;
- 			//¶ÔÏó¿í¶ÈºÍ¸ß¶È
- 			this.w = 0;
- 			this.h = 0;
- 			//x,y·½ÏòµÄËÙ¶È
- 			this.dx = 0;
- 			this.dy = 0;
- 			//x,y·½ÏòµÄ¼ÓËÙ¶È
- 			this.vx = 0;
- 			this.vy = 0;
- 			//½Ç¶È
- 			this.deg = 0;
- 			//z-index,Êý×ÖÔ½Ð¡Ô½ÏÈäÖÈ¾
- 			this.zIdx = 0;
- 			//ÊÇ·ñ¿É¼û
- 			this.isVisible = true;
- 			//ÊÇ·ñ¿ÉÒÆ³ý
- 			this.canRemove = false;
- 		},
- 		//ÉèÖÃÎ»ÖÃ
- 		moveTo: function(x, y) {
- 			this.x = x || this.x;
- 			this.y = y || this.y;
- 		},
- 		//ÒÆ¶¯
- 		move: function(xOff, yOff) {
- 			this.x += xOff;
- 			this.y += yOff;
- 		},
- 		//ÒÆ¶¯Ò»Ð¡²½
- 		moveStep: function() {
- 			this.dx += this.vx;
- 			this.dy += this.vy;
- 			this.x += this.dx;
- 			this.y += this.dy;
- 		},
- 		//Ðý×ªdeg¶È
- 		rot: function(deg) {
- 			this.deg = deg;
- 		},
- 		//¸üÐÂ·½·¨£¬Ã¿Ò»Ö¡µ÷ÓÃ	   
- 		update: function() {
- 			this.moveStep();
- 		},
- 		//äÖÈ¾·½·¨£¬Ã¿Ò»Ö¡µ÷ÓÃ,ctxÊÇcanvas»·¾³
- 		render: function(ctx) {
- 			return;
- 		},
- 		//ÅÐ¶ÏÊó±êµ±Ç°×ø±êÊÇ·ñÔÚµ±Ç°äÖÈ¾¶ÔÏóÇøÓòÖÐ
- 		isMouseIn: function() {
- 			var x = Mouse.gX(),
- 				y = Mouse.gY();
- 			var sc = TGame.sceneManager.getScene("main");
- 			var gx = this.owner.x,
- 				gy = this.owner.y;
- 			//×ª»»Êó±ê×ø±êµ½ÓÎÏ·´°¿Ú×ø±êÏµ
- 			var cd = MathUtil.mapSToCoord(x, y, gx, gy);
- 			var hw = this.w * 0.5,
- 				hh = this.h * 0.5;
- 			return cd[0] >= this.x - hw && cd[0] <= this.x + hw && cd[1] >= this.y - hh && cd[1] <= this.y + hh;
- 		}
- 	});
- 	//¼ÇÂ¼renderObj±àºÅ
- 	_renderObj.SID = 0;
- 	_renderObj.ClassName = "RenderObj";
- 	//×¢²áÀàµ½Àà¹¤³§ÖÐ
- 	ClassFactory.regClass(_renderObj.ClassName, _renderObj);
+    //æ¸²æŸ“å¯¹è±¡ç±»   
+    var _renderObj = win.RenderObj = Class.extend({
+        init: function(name) {
+            this.name = name || ("Unnamed_" + (_renderObj.SID++));
+            //æ‹¥æœ‰è€…,æŒ‡å‘åœºæ™¯å¯¹è±¡
+            this.owner = null;
+            //x,yæ–¹å‘åæ ‡
+            this.x = 0;
+            this.y = 0;
+            //å¯¹è±¡å®½åº¦å’Œé«˜åº¦
+            this.w = 0;
+            this.h = 0;
+            //x,yæ–¹å‘çš„é€Ÿåº¦
+            this.dx = 0;
+            this.dy = 0;
+            //x,yæ–¹å‘çš„åŠ é€Ÿåº¦
+            this.vx = 0;
+            this.vy = 0;
+            //è§’åº¦
+            this.deg = 0;
+            //z-index,æ•°å­—è¶Šå°è¶Šå…ˆæ¸²æŸ“
+            this.zIdx = 0;
+            //æ˜¯å¦å¯è§
+            this.isVisible = true;
+            //æ˜¯å¦å¯ç§»é™¤
+            this.canRemove = false;
+        },
+        //è®¾ç½®ä½ç½®
+        moveTo: function(x, y) {
+            this.x = x || this.x;
+            this.y = y || this.y;
+        },
+        //ç§»åŠ¨
+        move: function(xOff, yOff) {
+            this.x += xOff;
+            this.y += yOff;
+        },
+        //ç§»åŠ¨ä¸€å°æ­¥
+        moveStep: function() {
+            this.dx += this.vx;
+            this.dy += this.vy;
+            this.x += this.dx;
+            this.y += this.dy;
+        },
+        //æ—‹è½¬degåº¦
+        rot: function(deg) {
+            this.deg = deg;
+        },
+        //æ›´æ–°æ–¹æ³•ï¼Œæ¯ä¸€å¸§è°ƒç”¨       
+        update: function() {
+            this.moveStep();
+        },
+        //æ¸²æŸ“æ–¹æ³•ï¼Œæ¯ä¸€å¸§è°ƒç”¨,ctxæ˜¯canvasçŽ¯å¢ƒ
+        render: function(ctx) {
+            return;
+        },
+        //åˆ¤æ–­é¼ æ ‡å½“å‰åæ ‡æ˜¯å¦åœ¨å½“å‰æ¸²æŸ“å¯¹è±¡åŒºåŸŸä¸­
+        isMouseIn: function() {
+            var x = Mouse.gX(),
+                y = Mouse.gY();
+            var sc = TGame.sceneManager.getScene("main");
+            var gx = this.owner.x,
+                gy = this.owner.y;
+            //è½¬æ¢é¼ æ ‡åæ ‡åˆ°æ¸¸æˆçª—å£åæ ‡ç³»
+            var cd = MathUtil.mapSToCoord(x, y, gx, gy);
+            var hw = this.w * 0.5,
+                hh = this.h * 0.5;
+            return cd[0] >= this.x - hw && cd[0] <= this.x + hw && cd[1] >= this.y - hh && cd[1] <= this.y + hh;
+        }
+    });
+    //è®°å½•renderObjç¼–å·
+    _renderObj.SID = 0;
+    _renderObj.ClassName = "RenderObj";
+    //æ³¨å†Œç±»åˆ°ç±»å·¥åŽ‚ä¸­
+    ClassFactory.regClass(_renderObj.ClassName, _renderObj);
  }(window))
