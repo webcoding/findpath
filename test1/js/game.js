@@ -23,28 +23,31 @@
 					//创建精灵
 					self.initSprite();
 					//开始飞奔
-					self.run(60);
+					self.run(10);
 				});
 			},
 			initSprite: function() {
 				var sc = this.sceneManager.getScene("main");
 				var r = 3,
-					c = 3;
+					c = 3,
+					w = 32,
+					h = 32;
+
 				//创建地图
-				this.map = sc.createRObj(Map.ClassName, [r, c, "bar", 32, 32]);
+				this.map = sc.createRObj(Map.ClassName, [r, c, "bar", w, h]);
 				this.map.reset();
 				//创建主角
 				this.player = sc.createRObj(Player.ClassName);
 				var anims = ResManager.getAnimationsByName("sprite", "bul0");
 				this.player.setAnims(anims);
-				this.player.w = 32;
-				this.player.h = 32;
+				this.player.w = w;
+				this.player.h = h;
 				var p = this.map.mapPosToSC(1, 1);
 				this.player.moveTo(p[0], p[1]);
 				//创建选择点
 				this.selPoint = sc.createRObj(Sprite.ClassName);
 				this.selPoint.setAnims(ResManager.getAnimationsByName("sprite", "bul1"));
-				this.selPoint.w = this.selPoint.h = 16;
+				this.selPoint.w = this.selPoint.h = w;
 				this.selPoint.moveTo(p[0], p[1]);
 			}
 		})

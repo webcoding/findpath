@@ -45,10 +45,12 @@
         },
         //移动一小步
         moveStep: function() {
+            //移动之前先判断移动方向和身体方向是否一致，不然就要转向
             this.dx += this.vx;
             this.dy += this.vy;
             this.x += this.dx;
             this.y += this.dy;
+            //console.log(this.x +','+ this.y)
         },
         //旋转deg度
         rot: function(deg) {
