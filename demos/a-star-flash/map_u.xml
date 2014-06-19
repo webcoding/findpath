@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings name="Basic A* Diagram">
+  <start at="3,13"/>
+  <end at="22,21"/>
+  <weight from="5,5" to="21,5" value="Infinity"/>
+  <weight from="5,20" to="21,20" value="Infinity"/>
+  <weight from="21,5" to="21,20" value="Infinity"/>
+</settings>
