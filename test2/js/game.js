@@ -70,9 +70,10 @@
 		var cd1 = TGame.map.mapSCPos(cd[0], cd[1]);
 		var cd2 = TGame.map.mapPosToSC(cd1[0], cd1[1]);
 		var start = TGame.map.mapSCPos(TGame.player.x, TGame.player.y);
-		console.log(start)
+		console.log('start ['+ start + ']');
+		console.log('end   ['+ cd1 + ']');
 		//计算路经
-		var path = TGame.map.findPath(start, cd1);
+		var path = TGame.map.findPath(start, cd1, 'all');
 		if (path != null) {
 			TGame.selPoint.moveTo(cd2[0], cd2[1]);
 			TGame.player.startMove(path);

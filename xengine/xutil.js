@@ -361,6 +361,10 @@
 			},
 			//A*算法,pathArr表示最后返回的路径
 			findPathA: function(pathArr, start, end, row, col) {
+				if(!this.first){
+					console.log('A*算法，返回找到的最近路径');
+					this.first = true;
+				}
 				//添加数据到排序数组中
 				function addArrSort(descSortedArr, element, compare) {
 					var left = 0;
@@ -383,13 +387,13 @@
 					descSortedArr[left] = element;
 					return idx;
 				}
-				//判断两个点是否相同
 
+				//判断两个点是否相同
 				function pEqual(p1, p2) {
 					return p1.x == p2.x && p1.y == p2.y;
 				}
-				//获取两个点距离，采用曼哈顿方法
 
+				//获取两个点距离，采用曼哈顿方法
 				function posDist(pos, pos1) {
 					return (Math.abs(pos1.x - pos.x) + Math.abs(pos1.y - pos.y));
 				}
@@ -397,13 +401,129 @@
 				function between(val, min, max) {
 					return (val >= min && val <= max)
 				}
-				//比较两个点f值大小
 
+				//比较两个点f值大小
 				function compPointF(pt1, pt2) {
 					return pt1.f - pt2.f;
 				}
-				//处理当前节点
 
+				//处理当前节点
+				function processCurrpoint(arr, openList, row, col, currPoint, destPoint) {
+					//get up,down,left,right direct
+					var ltx = currPoint.x - 1;
+					var lty = currPoint.y - 1;
+					for (var i = 0; i < 3; i++)
+						for (var j = 0; j < 3; j++) {
+							var cx = ltx + i;
+							var cy = lty + j;
+							if ((cx == currPoint.x || cy == currPoint.y) && between(ltx, 0, row - 1) && between(lty, 0, col - 1)) {
+								var tp = arr[cx][cy];
+								if (tp.flag == 0 && tp.state != 1) {
+									if (pEqual(tp, destPoint)) {
+										tp.parent = currPoint;
+										return true;
+									}
+									if (tp.state == -1) {
+										tp.parent = currPoint;
+										tp.g = 1 + currPoint.g;
+										tp.h = posDist(tp, destPoint);
+										tp.f = tp.h + tp.f;
+										tp.state = 0
+										addArrSort(openList, tp, compPointF);
+									} else {
+										var g = 1 + currPoint.g
+										if (g < tp.g) {
+											tp.parent = currPoint;
+											tp.g = g;
+											tp.f = tp.g + tp.h;
+											openList.quickSort(compPointF);
+										}
+									}
+								}
+							}
+						}
+					return false;
+				}
+				//定义openList
+				var openList = [];
+				//定义closeList
+				var closeList = [];
+				start = pathArr[start[0]][start[1]];
+				end = pathArr[end[0]][end[1]];
+				//添加开始节点到openList;
+				addArrSort(openList, start, compPointF);
+				var finded = false;
+				var tcount = 0;
+				while ((openList.length > 0)) {
+					var currPoint = openList.pop();
+					currPoint.state = 1;
+					closeList.push(currPoint);
+					finded = processCurrpoint(pathArr, openList, row, col, currPoint, end);
+					if (finded) {
+						break;
+					}
+				}
+				if (finded) {
+					var farr = [];
+					var tp = end.parent;
+					farr.push(end);
+					while (tp != null) {
+						farr.push(tp);
+						tp = tp.parent;
+					}
+					return farr;
+				} else {
+					return null;
+				}
+			},
+			findPathAll: function(pathArr, start, end, row, col){
+				if(!this.first){
+					console.log('探寻领域算法，返回探寻的领域及路径');
+					this.first = true;
+				}
+				//添加数据到排序数组中
+				function addArrSort(descSortedArr, element, compare) {
+					var left = 0;
+					var right = descSortedArr.length - 1;
+					var idx = -1;
+					var mid = (left + right) >> 1;
+					while (left <= right) {
+						var mid = (left + right) >> 1;
+						if (compare(descSortedArr[mid], element) == 1) {
+							left = mid + 1;
+						} else if (compare(descSortedArr[mid], element) == -1) {
+							right = mid - 1;
+						} else {
+							break;
+						}
+					}
+					for (var i = descSortedArr.length - 1; i >= left; i--) {
+						descSortedArr[i + 1] = descSortedArr[i];
+					}
+					descSortedArr[left] = element;
+					return idx;
+				}
+
+				//判断两个点是否相同
+				function pEqual(p1, p2) {
+					return p1.x == p2.x && p1.y == p2.y;
+				}
+
+				//获取两个点距离，采用曼哈顿方法
+				function posDist(pos, pos1) {
+					return (Math.abs(pos1.x - pos.x) + Math.abs(pos1.y - pos.y));
+				}
+
+				function between(val, min, max) {
+					return (val >= min && val <= max)
+				}
+
+				//比较两个点f值大小
+				function compPointF(pt1, pt2) {
+					return pt1.f - pt2.f;
+				}
+
+				//处理当前节点
 				function processCurrpoint(arr, openList, row, col, currPoint, destPoint) {
 					//get up,down,left,right direct
 					var ltx = currPoint.x - 1;

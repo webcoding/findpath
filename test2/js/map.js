@@ -50,9 +50,18 @@
       return [this.offX + this.ww * c | 0, this.offY + this.wh * r | 0];
     },
     //查找路经
-    findPath: function(start, end) {
+    findPath: function(start, end, type) {
+      var type = type || '';
       var m = MapUtil.convertArrToAS(this.maze);
-      var p = MapUtil.findPathA(m, start, end, m.length, m.length);
+      var p;
+      switch(type){
+        case 'all':
+          p = MapUtil.findPathAll(m, start, end, m.length, m.length);
+          break;
+        case '':
+        default:
+          p = MapUtil.findPathA(m, start, end, m.length, m.length);
+      }
       return p;
     },
     render: function(ctx) {
