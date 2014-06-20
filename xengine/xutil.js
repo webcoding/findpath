@@ -281,6 +281,7 @@
 								//console.log(i + ',' + a[2 * i + 1]);
 							}
 					}
+					console.log("创建的地图数据");
 					for (var i = 0; i < rows; i++) {
 						for (var j = 0; j < cols; j++) {}
 						console.log(a[i])

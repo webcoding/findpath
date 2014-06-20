@@ -17,6 +17,7 @@
       this._super();
     },
     reset: function() {
+      console.log("开始创建地图");
       var sc = this.owner;
       var maze = MapUtil.primMaze(this.r, this.c, 'wall');
       this.maze = maze;

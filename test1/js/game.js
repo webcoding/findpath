@@ -28,14 +28,18 @@
 			},
 			initSprite: function() {
 				var sc = this.sceneManager.getScene("main");
-				var r = 3,
-					c = 3,
+				var r = 2,
+					c = 2,
 					w = 32,
 					h = 32;
 
 				//创建地图
-				this.map = sc.createRObj(Map.ClassName, [r, c, "bar", w, h]);
-				this.map.reset();
+				if(!this.map){
+					this.map = sc.createRObj(Map.ClassName, [r, c, "bar", w, h]);
+					this.map.reset();
+				}
+				//this.map = sc.createRObj(Map.ClassName, [r, c, "bar", w, h]);
+				//this.map.reset();
 				//创建主角
 				this.player = sc.createRObj(Player.ClassName);
 				var anims = ResManager.getAnimationsByName("sprite", "bul0");
@@ -66,6 +70,7 @@
 		var cd1 = TGame.map.mapSCPos(cd[0], cd[1]);
 		var cd2 = TGame.map.mapPosToSC(cd1[0], cd1[1]);
 		var start = TGame.map.mapSCPos(TGame.player.x, TGame.player.y);
+		console.log(start)
 		//计算路经
 		var path = TGame.map.findPath(start, cd1);
 		if (path != null) {
