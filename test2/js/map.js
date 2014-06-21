@@ -49,11 +49,20 @@
     mapPosToSC: function(r, c) {
       return [this.offX + this.ww * c | 0, this.offY + this.wh * r | 0];
     },
+    inRange: function(map,target,tips){
+      var tips = tips || '目标位置超出地图范围，请重新选择';
+      var result = target[0]>0 && target[1]>0 && (target[0]<map.length) && (target[1] < map[0].length)
+      console.log('[' + target + '] ' + (result ? 'in' : 'out') + ' of range [1-' + (map.length-1) +',1-'+(map[0].length-1) + ']');
+      !result && console.log(tips);
+      return result;
+    },
     //查找路经
     findPath: function(start, end, type) {
       var type = type || '';
       var m = MapUtil.convertArrToAS(this.maze);
       var p;
+      //判断目标位置是否在有效范围内
+      if(!this.inRange(m,end)) return;
       switch(type){
         case 'all':
           p = MapUtil.findPathAll(m, start, end, m.length, m.length);
