@@ -359,6 +359,17 @@
 				}
 				return a;
 			},
+
+			/* 各种算法
+			 * @findPathA, 		A*算法,pathArr表示最后返回的路径
+			 * @findPathAll		遍历地图算法（已知地图）
+			 * @				随机碰撞算法
+			 * @				扫地算法（）
+			 * @				探索地图算法（未知而去探索得到地图）
+			 * @				电子扫描算法
+			 * @				子封闭空间算法（封锁一部分空间后，遍历，之后遍历其他部分）
+			**/
+
 			//A*算法,pathArr表示最后返回的路径
 			findPathA: function(pathArr, start, end, row, col) {
 				if(!this.first){
