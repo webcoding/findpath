@@ -23,13 +23,13 @@
 					//创建精灵
 					self.initSprite();
 					//开始飞奔
-					self.run(10);
+					self.run(20);
 				});
 			},
 			initSprite: function() {
 				var sc = this.sceneManager.getScene("main");
-				var r = 2,
-					c = 2,
+				var r = 3,//排
+					c = 4,//列
 					w = 32,
 					h = 32;
 
