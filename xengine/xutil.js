@@ -237,12 +237,12 @@
 				this.x = x;
 				this.y = y;
 				this.parent = null;
-				this.f = 0;
-				this.g = 0;
-				this.h = 0;
+				this.f = 0;		//途经当前节点的预估成本
+				this.g = 0;		//到指定节点的成本
+				this.h = 0;		//估算成本
 				//当前点状态，0：表示在openlist 1:表示closelist,-1表示还没处理
 				this.state = -1;
-				//flag表明该点是否可通过
+				//flag表明该点是否不可通过
 				this.flag = 0;
 			},
 			//产生随机迷宫
@@ -359,10 +359,30 @@
 				}
 				return a;
 			},
+			printPath: function(pathArr){
+				/* 打印路径 pathArr
+				 * 节点属性，详细参看 定义点对象Point 中说明
+				 */
+				console.log('[x,y,f,g,h,state]');//flag,
+				//console.log(pathArr);
+				var pathLen = 0;
+				for(var i=0,x1=pathArr.length;i<x1;i++){
+					for(var j=0,x2=pathArr[i].length;j<x2;j++){
+						var pathPoint = pathArr[i][j];
+						if(pathPoint.state != -1){
+							pathLen++;
+							console.log('['+pathPoint.x+','+pathPoint.y+','+pathPoint.f+','+pathPoint.g+','+pathPoint.h+','+pathPoint.state+']');
+						}
+					}
+				}
+				console.log('探寻路径成本：'+pathLen);
+			},
 
 			/* 各种算法
 			 * @findPathA, 		A*算法,pathArr表示最后返回的路径
 			 * @findPathAll		遍历地图算法（已知地图）
+			 * @xAdapt			自适应算法
+			 * @plowPath		犁田算法
 			 * @				随机碰撞算法
 			 * @				扫地算法（）
 			 * @				探索地图算法（未知而去探索得到地图）
@@ -474,6 +494,9 @@
 						break;
 					}
 				}
+
+				this.printPath(pathArr);
+
 				if (finded) {
 					var farr = [];
 					var tp = end.parent;
@@ -487,17 +510,28 @@
 					return null;
 				}
 			},
-			findPathAll: function(pathArr, start, end, row, col){
+			//xAdapt 自适应算法
+			xAdapt: function(pathArr, start, end, row, col){
 				if(!this.first){
-					console.log('探寻领域算法，返回探寻的领域及路径');
+					console.log('自适应算法');
 					this.first = true;
 				}
-				//添加数据到排序数组中
+				//return null;
+			},
+			//plowPath 犁田算法(左右手法则)
+			plowPath: function(pathArr, start, end, row, col){
+				//if(!this.first){
+					console.log('犁田算法');
+				// 	this.first = true;
+				// }
+
+				//添加数据到排序数组中，这个排序数组是干什么的？openList
 				function addArrSort(descSortedArr, element, compare) {
+					//left,right 	
 					var left = 0;
 					var right = descSortedArr.length - 1;
 					var idx = -1;
-					var mid = (left + right) >> 1;
+					var mid = (left + right) >> 1;	//就是除以2，求中间数
 					while (left <= right) {
 						var mid = (left + right) >> 1;
 						if (compare(descSortedArr[mid], element) == 1) {
@@ -510,8 +544,10 @@
 					}
 					for (var i = descSortedArr.length - 1; i >= left; i--) {
 						descSortedArr[i + 1] = descSortedArr[i];
+						//console.log(descSortedArr[i]);
 					}
 					descSortedArr[left] = element;
+					//console.log(element);
 					return idx;
 				}
 
@@ -529,7 +565,7 @@
 					return (val >= min && val <= max)
 				}
 
-				//比较两个点f值大小
+				//比较两个点f值大小，返回差值
 				function compPointF(pt1, pt2) {
 					return pt1.f - pt2.f;
 				}
@@ -582,14 +618,18 @@
 				var finded = false;
 				var tcount = 0;
 				while ((openList.length > 0)) {
+					console.log(openList.length);
 					var currPoint = openList.pop();
-					currPoint.state = 1;
+					currPoint.state = 1;	//默认为-1
 					closeList.push(currPoint);
 					finded = processCurrpoint(pathArr, openList, row, col, currPoint, end);
 					if (finded) {
 						break;
 					}
 				}
+
+				this.printPath(pathArr);
+				
 				if (finded) {
 					var farr = [];
 					var tp = end.parent;
@@ -601,6 +641,12 @@
 					return farr;
 				} else {
 					return null;
+				}
+			},
+			findPathAll: function(pathArr, start, end, row, col){
+				if(!this.first){
+					console.log('探寻领域算法，返回探寻的领域及路径');
+					this.first = true;
 				}
 			}
 		}

@@ -67,6 +67,12 @@
         case 'all':
           p = MapUtil.findPathAll(m, start, end, m.length, m.length);
           break;
+        case 'adapt':
+          p = MapUtil.xAdapt(m, start, end, m.length, m.length);
+          break;
+        case 'plow':
+          p = MapUtil.plowPath(m, start, end, m.length, m.length);
+          break;
         case '':
         default:
           p = MapUtil.findPathA(m, start, end, m.length, m.length);

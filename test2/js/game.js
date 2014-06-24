@@ -28,8 +28,8 @@
 			},
 			initSprite: function() {
 				var sc = this.sceneManager.getScene("main");
-				var r = 3,//排
-					c = 4,//列
+				var r = 2,//排
+					c = 2,//列
 					w = 32,
 					h = 32;
 
@@ -73,10 +73,16 @@
 		console.log('start ['+ start + ']');
 		console.log('end   ['+ cd1 + ']');
 		//计算路经
-		var path = TGame.map.findPath(start, cd1, 'all');
+		var path = TGame.map.findPath(start, cd1, 'plow');
 		if (path != null) {
 			TGame.selPoint.moveTo(cd2[0], cd2[1]);
 			TGame.player.startMove(path);
+		}else{
+			//设置随机位置
+			//TGame.player.moveTo(MathUtil.randInt(20,380),MathUtil.randInt(20,280));
+			//设置随机速度0~3
+			//TGame.player.dx = MathUtil.randInt(1,3);
+			//TGame.player.dy = MathUtil.randInt(1,3);
 		}
 	});
 }(window))
