@@ -22,7 +22,7 @@
       var maze = MapUtil.primMaze(this.r, this.c, 'wall');
       this.maze = maze;
       this.mapData = MapUtil.convertArrToAS(maze);
-      this.offX = (sc.w - this.ww * (2 * this.c + 1)) * 0.5 + (this.ww * 0.5)
+      this.offX = (sc.w - this.ww * (2 * this.c + 1)) * 0.5 + (this.ww * 0.5);
       this.offY = (sc.h - this.wh * (2 * this.r + 1)) * 0.5 + (this.wh * 0.5);
       //创建外墙
       for (var i = 0; i < maze.length; i++) {
